@@ -1,11 +1,17 @@
 ﻿using UnityEngine;
 
-namespace CodeBase.Runtime.Player.Input
+namespace CodeBase.Runtime.Infrastructure.Services.Input
 {
-  public class InputPlayer
+  public class PlayerInput : IPlayerInput
   {
-    private PlayerActions _playerActions;
+    private readonly PlayerActions _playerActions;
     private Transform _camera;
+
+    public PlayerInput()
+    {
+      _playerActions = new PlayerActions();
+      _playerActions.Enable();
+    }
 
     public void SetPlayerCamera(Transform camera)
     {
