@@ -6,5 +6,6 @@ namespace CodeBase.Runtime.Infrastructure.Services.Input
   {
     void SetPlayerCamera(Transform camera);
     Vector2 GetMoveDirection();
+    Vector2 GetLookDelta();
   }
 }

@@ -5,6 +5,7 @@ namespace CodeBase.Runtime.Infrastructure.Services.Input
   public class PlayerInput : IPlayerInput
   {
     private readonly PlayerActions _playerActions;
+    
     private Transform _camera;
 
     public PlayerInput()
@@ -22,7 +23,10 @@ namespace CodeBase.Runtime.Infrastructure.Services.Input
     {
       return _playerActions.Gameplay.MoveDirection.ReadValue<Vector2>();
     }
-    
-    
+
+    public Vector2 GetLookDelta()
+    {
+      return _playerActions.Gameplay.LookDelta.ReadValue<Vector2>();
+    }
   }
 }
