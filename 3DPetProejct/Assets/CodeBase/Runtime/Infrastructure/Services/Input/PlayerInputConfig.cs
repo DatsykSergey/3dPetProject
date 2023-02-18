@@ -44,6 +44,15 @@ public partial class @PlayerActions : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Jump"",
+                    ""type"": ""Button"",
+                    ""id"": ""bcc181a8-309b-4e73-971d-dba5b4a59fb8"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -112,6 +121,17 @@ public partial class @PlayerActions : IInputActionCollection2, IDisposable
                     ""action"": ""LookDelta"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7d168f4a-7b31-4a6b-b655-167841de0f34"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -122,6 +142,7 @@ public partial class @PlayerActions : IInputActionCollection2, IDisposable
         m_Gameplay = asset.FindActionMap("Gameplay", throwIfNotFound: true);
         m_Gameplay_MoveDirection = m_Gameplay.FindAction("MoveDirection", throwIfNotFound: true);
         m_Gameplay_LookDelta = m_Gameplay.FindAction("LookDelta", throwIfNotFound: true);
+        m_Gameplay_Jump = m_Gameplay.FindAction("Jump", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -183,12 +204,14 @@ public partial class @PlayerActions : IInputActionCollection2, IDisposable
     private IGameplayActions m_GameplayActionsCallbackInterface;
     private readonly InputAction m_Gameplay_MoveDirection;
     private readonly InputAction m_Gameplay_LookDelta;
+    private readonly InputAction m_Gameplay_Jump;
     public struct GameplayActions
     {
         private @PlayerActions m_Wrapper;
         public GameplayActions(@PlayerActions wrapper) { m_Wrapper = wrapper; }
         public InputAction @MoveDirection => m_Wrapper.m_Gameplay_MoveDirection;
         public InputAction @LookDelta => m_Wrapper.m_Gameplay_LookDelta;
+        public InputAction @Jump => m_Wrapper.m_Gameplay_Jump;
         public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -204,6 +227,9 @@ public partial class @PlayerActions : IInputActionCollection2, IDisposable
                 @LookDelta.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnLookDelta;
                 @LookDelta.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnLookDelta;
                 @LookDelta.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnLookDelta;
+                @Jump.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnJump;
+                @Jump.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnJump;
+                @Jump.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnJump;
             }
             m_Wrapper.m_GameplayActionsCallbackInterface = instance;
             if (instance != null)
@@ -214,6 +240,9 @@ public partial class @PlayerActions : IInputActionCollection2, IDisposable
                 @LookDelta.started += instance.OnLookDelta;
                 @LookDelta.performed += instance.OnLookDelta;
                 @LookDelta.canceled += instance.OnLookDelta;
+                @Jump.started += instance.OnJump;
+                @Jump.performed += instance.OnJump;
+                @Jump.canceled += instance.OnJump;
             }
         }
     }
@@ -222,5 +251,6 @@ public partial class @PlayerActions : IInputActionCollection2, IDisposable
     {
         void OnMoveDirection(InputAction.CallbackContext context);
         void OnLookDelta(InputAction.CallbackContext context);
+        void OnJump(InputAction.CallbackContext context);
     }
 }
