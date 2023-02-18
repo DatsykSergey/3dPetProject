@@ -35,6 +35,15 @@ public partial class @PlayerActions : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""LookDelta"",
+                    ""type"": ""Value"",
+                    ""id"": ""38ac72e6-92e2-492a-8694-f5fbbc5643ed"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -92,6 +101,17 @@ public partial class @PlayerActions : IInputActionCollection2, IDisposable
                     ""action"": ""MoveDirection"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5b9174dc-fc83-40f5-b887-3b87b2b9be26"",
+                    ""path"": ""<Mouse>/delta"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""LookDelta"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -101,6 +121,7 @@ public partial class @PlayerActions : IInputActionCollection2, IDisposable
         // Gameplay
         m_Gameplay = asset.FindActionMap("Gameplay", throwIfNotFound: true);
         m_Gameplay_MoveDirection = m_Gameplay.FindAction("MoveDirection", throwIfNotFound: true);
+        m_Gameplay_LookDelta = m_Gameplay.FindAction("LookDelta", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -161,11 +182,13 @@ public partial class @PlayerActions : IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Gameplay;
     private IGameplayActions m_GameplayActionsCallbackInterface;
     private readonly InputAction m_Gameplay_MoveDirection;
+    private readonly InputAction m_Gameplay_LookDelta;
     public struct GameplayActions
     {
         private @PlayerActions m_Wrapper;
         public GameplayActions(@PlayerActions wrapper) { m_Wrapper = wrapper; }
         public InputAction @MoveDirection => m_Wrapper.m_Gameplay_MoveDirection;
+        public InputAction @LookDelta => m_Wrapper.m_Gameplay_LookDelta;
         public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -178,6 +201,9 @@ public partial class @PlayerActions : IInputActionCollection2, IDisposable
                 @MoveDirection.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMoveDirection;
                 @MoveDirection.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMoveDirection;
                 @MoveDirection.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMoveDirection;
+                @LookDelta.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnLookDelta;
+                @LookDelta.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnLookDelta;
+                @LookDelta.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnLookDelta;
             }
             m_Wrapper.m_GameplayActionsCallbackInterface = instance;
             if (instance != null)
@@ -185,6 +211,9 @@ public partial class @PlayerActions : IInputActionCollection2, IDisposable
                 @MoveDirection.started += instance.OnMoveDirection;
                 @MoveDirection.performed += instance.OnMoveDirection;
                 @MoveDirection.canceled += instance.OnMoveDirection;
+                @LookDelta.started += instance.OnLookDelta;
+                @LookDelta.performed += instance.OnLookDelta;
+                @LookDelta.canceled += instance.OnLookDelta;
             }
         }
     }
@@ -192,5 +221,6 @@ public partial class @PlayerActions : IInputActionCollection2, IDisposable
     public interface IGameplayActions
     {
         void OnMoveDirection(InputAction.CallbackContext context);
+        void OnLookDelta(InputAction.CallbackContext context);
     }
 }
