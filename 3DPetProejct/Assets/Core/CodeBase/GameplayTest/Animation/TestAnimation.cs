@@ -1,4 +1,4 @@
-﻿using CodeBase.Runtime.Gameplay.Character;
+﻿using Core.CodeBase.Runtime.Gameplay.Player;
 using UnityEngine;
 
 namespace CodeBase.GameplayTest.Animation
@@ -7,7 +7,7 @@ namespace CodeBase.GameplayTest.Animation
   {
     [SerializeField, Range(-1, 1)] private float _vertical;
     [SerializeField, Range(-1, 1)] private float _horizontal;
-    [SerializeField] private CharacterAnimator _animator;
+    [SerializeField] private PlayerAnimator _animator;
     
     private void Update()
     {

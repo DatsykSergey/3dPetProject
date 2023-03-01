@@ -1,9 +1,8 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace CodeBase.Runtime.Gameplay.Character
+namespace Core.CodeBase.Runtime.Gameplay.Player
 {
-  public class CharacterAnimator : MonoBehaviour
+  public class PlayerAnimator : MonoBehaviour
   {
     [SerializeField] private Animator _animator;
 
