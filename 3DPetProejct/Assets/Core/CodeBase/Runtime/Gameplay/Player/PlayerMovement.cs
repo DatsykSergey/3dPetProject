@@ -7,6 +7,8 @@ namespace Core.CodeBase.Runtime.Gameplay.Player
   public class PlayerMovement : MonoBehaviour
   {
     [SerializeField] private float _speed;
+    [SerializeField] private float _rotationSpeed;
+    
     [SerializeField] private CharacterController _characterController;
     [SerializeField] private PlayerAnimator _animator;
     
@@ -15,6 +17,8 @@ namespace Core.CodeBase.Runtime.Gameplay.Player
     private const float GravityY = -9.81f;
     private bool _isGrounded;
     private const float JumpHeight = 1.0f;
+
+    private float _currentRotateVelocity;
     
     [Inject]
     private void Construct(IPlayerInput input)
@@ -48,6 +52,12 @@ namespace Core.CodeBase.Runtime.Gameplay.Player
       float rightVelocity = Vector3.Dot(moveDirection, transform.right);
       _animator.UpdateMovement(forwardVelocity, rightVelocity);
 
+      if (moveDirection == Vector3.zero)
+        return;
+      
+      float angel = Mathf.Atan2(moveDirection.x, moveDirection.z) * Mathf.Rad2Deg;
+      angel = Mathf.SmoothDampAngle(transform.rotation.y, angel, ref _currentRotateVelocity, _rotationSpeed);
+      transform.rotation = Quaternion.Euler(0f, angel, 0f);
     }
   }
 }
