@@ -1,4 +1,5 @@
 ﻿using CodeBase.Runtime.Infrastructure.Services.Input;
+using Core.CodeBase.Runtime.Gameplay.Player;
 using UnityEngine;
 using Zenject;
 
@@ -8,6 +9,8 @@ namespace CodeBase.Runtime.Gameplay.Player
   {
     [SerializeField] private float _speed;
     [SerializeField] private CharacterController _characterController;
+    [SerializeField] private PlayerAnimator _animator;
+    
     private IPlayerInput _input;
     private Vector3 _fallVelocity;
     private const float GravityY = -9.81f;
@@ -29,8 +32,9 @@ namespace CodeBase.Runtime.Gameplay.Player
       {
         _fallVelocity.y = 0;
       }
-      
-      Vector3 velocity = _input.GetCameraRelativeMoveDirection() * (_speed * Time.deltaTime);
+
+      Vector3 moveDirection = _input.GetCameraRelativeMoveDirection();
+      Vector3 velocity = moveDirection * (_speed * Time.deltaTime);
       _characterController.Move(velocity);
       
       if (_input.IsPressJump() && _isGrounded)
@@ -40,6 +44,11 @@ namespace CodeBase.Runtime.Gameplay.Player
 
       _fallVelocity.y += GravityY * Time.deltaTime;
       _characterController.Move(_fallVelocity * Time.deltaTime);
+
+      float forwardVelocity = Vector3.Dot(moveDirection, transform.forward);
+      float rightVelocity = Vector3.Dot(moveDirection, transform.right);
+      _animator.UpdateMovement(forwardVelocity, rightVelocity);
+
     }
   }
 }
