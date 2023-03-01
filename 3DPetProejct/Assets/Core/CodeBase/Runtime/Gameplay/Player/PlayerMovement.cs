@@ -1,9 +1,8 @@
-﻿using CodeBase.Runtime.Infrastructure.Services.Input;
-using Core.CodeBase.Runtime.Gameplay.Player;
+﻿using Core.CodeBase.Runtime.Infrastructure.Services.Input;
 using UnityEngine;
 using Zenject;
 
-namespace CodeBase.Runtime.Gameplay.Player
+namespace Core.CodeBase.Runtime.Gameplay.Player
 {
   public class PlayerMovement : MonoBehaviour
   {

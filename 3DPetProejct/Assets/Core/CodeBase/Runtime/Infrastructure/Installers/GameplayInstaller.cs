@@ -1,8 +1,8 @@
-﻿using CodeBase.Runtime.Infrastructure.Services.Input;
+﻿using Core.CodeBase.Runtime.Infrastructure.Services.Input;
 using UnityEngine;
 using Zenject;
 
-namespace CodeBase.Runtime.Infrastructure.Installers
+namespace Core.CodeBase.Runtime.Infrastructure.Installers
 {
   public class GameplayInstaller : MonoBehaviour
   {

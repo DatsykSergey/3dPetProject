@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Profiling;
 
-namespace CodeBase.Runtime.Gameplay.Player
+namespace Core.CodeBase.Runtime.Gameplay.Player
 {
   public class EdgeFinder : MonoBehaviour
   {

@@ -2,7 +2,7 @@
 using UnityEngine;
 using Zenject;
 
-namespace CodeBase.Runtime.Infrastructure.Services.Input
+namespace Core.CodeBase.Runtime.Infrastructure.Services.Input
 {
   public class CinemachineInputAdapter : MonoBehaviour
   {
