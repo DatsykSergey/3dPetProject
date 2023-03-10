@@ -56,8 +56,9 @@ namespace Core.CodeBase.Runtime.Gameplay.Player
         return;
       
       float angel = Mathf.Atan2(moveDirection.x, moveDirection.z) * Mathf.Rad2Deg;
-      angel = Mathf.SmoothDampAngle(transform.rotation.y, angel, ref _currentRotateVelocity, _rotationSpeed);
-      transform.rotation = Quaternion.Euler(0f, angel, 0f);
+      float newAngel = Mathf.SmoothDampAngle(transform.eulerAngles.y, angel, ref _currentRotateVelocity, _rotationSpeed);
+      
+      transform.rotation = Quaternion.Euler(0f, newAngel, 0f);
     }
   }
 }
