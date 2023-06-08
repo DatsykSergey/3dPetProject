@@ -50,7 +50,7 @@ namespace Core.CodeBase.Runtime.Gameplay.Player
 
       float forwardVelocity = Vector3.Dot(moveDirection, transform.forward);
       float rightVelocity = Vector3.Dot(moveDirection, transform.right);
-      _animator.UpdateMovement(forwardVelocity, rightVelocity);
+      _animator?.UpdateMovement(forwardVelocity, rightVelocity);
 
       if (moveDirection == Vector3.zero)
         return;
