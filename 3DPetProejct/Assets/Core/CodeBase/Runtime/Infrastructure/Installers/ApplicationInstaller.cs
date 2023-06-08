@@ -1,4 +1,5 @@
 ﻿using Core.CodeBase.Runtime.Infrastructure.Services.Input;
+using UnityEngine;
 using Zenject;
 
 namespace Core.CodeBase.Runtime.Infrastructure.Installers
@@ -11,6 +12,12 @@ namespace Core.CodeBase.Runtime.Infrastructure.Installers
         .Bind<IPlayerInput>()
         .To<PlayerInput>()
         .AsSingle();
+    }
+
+    public override void Start()
+    {
+      base.Start();
+      Cursor.visible = false;
     }
   }
 }
