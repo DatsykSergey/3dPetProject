@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using UnityEditor;
+using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Core.CodeBase.Runtime.Infrastructure.Services.Input
 {
@@ -12,6 +14,7 @@ namespace Core.CodeBase.Runtime.Infrastructure.Services.Input
     {
       _playerActions = new PlayerActions();
       _playerActions.Enable();
+      _playerActions.Gameplay.StopGame.performed += OnStopButtonClick;
     }
 
     public void SetPlayerCamera(Transform camera)
@@ -44,6 +47,14 @@ namespace Core.CodeBase.Runtime.Infrastructure.Services.Input
     public bool IsPressJump()
     {
       return _playerActions.Gameplay.Jump.IsPressed();
+    }
+
+    private void OnStopButtonClick(InputAction.CallbackContext obj)
+    {
+      if (EditorApplication.isPlaying)
+      {
+        EditorApplication.ExitPlaymode();
+      }
     }
   }
 }
