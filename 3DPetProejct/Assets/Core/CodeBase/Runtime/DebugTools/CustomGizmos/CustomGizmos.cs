@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using ModestTree;
 using UnityEngine;
 
@@ -21,12 +22,20 @@ namespace Core.CodeBase.Runtime.DebugTools.CustomGizmos
         return _instance;
       }
     }
-
+    
     private readonly Stack<GizmosDrawer> _drawers = new (capacity: 100);
+    private Mesh _sphereMesh;
 
+    private void Awake()
+    {
+      var sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+      _sphereMesh = sphere.GetComponent<MeshFilter>().mesh;
+      Destroy(sphere);
+    }
     public void DrawSphere(Vector3 position, float radius, Color color)
     {
-      _drawers.Push(new SphereDrawer(position, radius, color));
+      // _drawers.Push(new SphereDrawer(position, radius, color));
+      _drawers.Push(new MeshDrawer(position, radius, color, _sphereMesh));
     }
 
     private void OnDrawGizmos()
