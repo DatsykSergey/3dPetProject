@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using Core.CodeBase.Runtime.DebugTools.CustomGizmos;
+﻿using Core.CodeBase.Runtime.DebugTools.CustomGizmos;
 using UnityEngine;
 
 namespace Core.CodeBase.Runtime.Gameplay
@@ -7,10 +6,12 @@ namespace Core.CodeBase.Runtime.Gameplay
   public class LedgeDetector : MonoBehaviour
   {
     [SerializeField] private Vector3 _boxSize = Vector3.one;
+    [SerializeField] private Vector3 _boxOffset = Vector3.zero;
     [SerializeField] private LayerMask _layerMask;
     private readonly Collider[] _result = new Collider[8];
     private int _count = 0;
-
+    private Vector3 _nearPointToCollider;
+    private BoxCollider _nearBoxCollider = null;
 
     private void FixedUpdate()
     {
@@ -19,14 +20,20 @@ namespace Core.CodeBase.Runtime.Gameplay
         return;
       }
 
-      _count = Physics.OverlapBoxNonAlloc(transform.position, _boxSize, _result, transform.rotation, _layerMask,
+      _count = Physics.OverlapBoxNonAlloc(transform.TransformPoint(_boxOffset), _boxSize, _result, transform.rotation, _layerMask,
         QueryTriggerInteraction.UseGlobal);
-
-
     }
 
     private void Update()
     {
+      TryFindNearestPoint();
+    }
+
+    private void TryFindNearestPoint()
+    {
+      int result = -1;
+      _nearBoxCollider = null;
+      float minDistance = float.MaxValue;
       for (int i = 0; i < _count; i++)
       {
         BoxCollider boxCollider = _result[i] as BoxCollider;
@@ -35,16 +42,44 @@ namespace Core.CodeBase.Runtime.Gameplay
           Debug.LogWarning("Find not box collider Ledge");
           continue;
         }
-        CustomGizmos.Isntance.DrawSphere(boxCollider.transform.position, 0.5f, Color.green);
-        Vector3 rightPoint = GetRightPoint(boxCollider);
-        Vector3 leftPoint = GetLeftPoint(boxCollider);
-        CustomGizmos.Isntance.DrawLine(rightPoint, leftPoint, Color.green);
-        Vector3 distanceToBoxCollider = transform.position - boxCollider.transform.position;
 
-        Vector3 nearPointToCollider = boxCollider.transform.position + boxCollider.transform.right * Vector3.Dot(boxCollider.transform.right, distanceToBoxCollider); // why minus
+        if (TryGetNearPointToCollider(boxCollider, out Vector3 nearPointToCollider) == false)
+        {
+          continue;
+        }
 
-        CustomGizmos.Isntance.DrawLine(transform.position, nearPointToCollider, Color.blue);
+        float distanceToNearPoint = (nearPointToCollider - transform.position).sqrMagnitude;
+        if (distanceToNearPoint < minDistance)
+        {
+          _nearPointToCollider = nearPointToCollider;
+          _nearBoxCollider = boxCollider;
+        }
       }
+
+      if (_nearBoxCollider != null)
+      {
+        Vector3 rightPoint = GetRightPoint(_nearBoxCollider);
+        Vector3 leftPoint = GetLeftPoint(_nearBoxCollider);
+
+        CustomGizmos.Isntance.DrawLine(transform.position, _nearPointToCollider, Color.blue);
+        CustomGizmos.Isntance.DrawLine(rightPoint, leftPoint, Color.green);
+        CustomGizmos.Isntance.DrawSphere(_nearBoxCollider.transform.position, 0.5f, Color.green);
+      }
+    }
+
+    private bool TryGetNearPointToCollider(BoxCollider boxCollider, out Vector3 point)
+    {
+      Vector3 distanceToBoxCollider = transform.position - boxCollider.transform.position;
+
+      float distanceFromCenterBoxToNearPoint = Vector3.Dot(boxCollider.transform.right, distanceToBoxCollider);
+      if (distanceFromCenterBoxToNearPoint >= boxCollider.size.x * 0.5f)
+      {
+        point = default;
+        return false;
+      }
+      
+      point = boxCollider.transform.position + boxCollider.transform.right * distanceFromCenterBoxToNearPoint;
+      return true;
     }
 
     private static Vector3 GetRightPoint(BoxCollider boxCollider)
@@ -60,8 +95,8 @@ namespace Core.CodeBase.Runtime.Gameplay
     private void OnDrawGizmos()
     {
       Gizmos.color = Color.blue;
-      Gizmos.matrix = Matrix4x4.TRS(transform.position, transform.rotation, Vector3.one);
-      Gizmos.DrawWireCube(Vector3.zero, _boxSize*2);
+      Gizmos.matrix = Matrix4x4.TRS(transform.TransformPoint(_boxOffset), transform.rotation, Vector3.one);
+      Gizmos.DrawWireCube(Vector3.zero, _boxSize * 2);
     }
   }
 }
