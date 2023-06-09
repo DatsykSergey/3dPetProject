@@ -11,7 +11,9 @@ namespace Core.CodeBase.Runtime.Gameplay
     [SerializeField] private LayerMask _layerMask;
     
     private RaycastHit[] _hits = new RaycastHit[1];
-    private bool HasObstacle => _hits.Length > 0;
+    public bool HasObstacle => _hits.Length > 0;
+    public Vector3 HitPoint => _hits[0].point;
+    public Vector3 HitNormal => _hits[0].normal;
 
     private void FixedUpdate()
     {
