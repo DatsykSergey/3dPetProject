@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using ModestTree;
 using UnityEngine;
 
@@ -9,7 +8,7 @@ namespace Core.CodeBase.Runtime.DebugTools.CustomGizmos
   {
     private static CustomGizmos _instance;
 
-    public static CustomGizmos Isntance
+    public static CustomGizmos Instance
     {
       get
       {
@@ -41,6 +40,11 @@ namespace Core.CodeBase.Runtime.DebugTools.CustomGizmos
     public void DrawSphere(Vector3 position, float radius, Color color)
     {
       _drawers.Push(new MeshDrawer(position, radius, color, _sphereMesh));
+    }
+
+    public void DrawSphereCast(Vector3 position, Vector3 direction, float radius, float distance, Color color)
+    {
+      _drawers.Push(new SphereCastDrawer(position, direction, radius, distance, color));
     }
 
     private void OnDrawGizmos()
