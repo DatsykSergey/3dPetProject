@@ -61,9 +61,9 @@ namespace Core.CodeBase.Runtime.Gameplay
         Vector3 rightPoint = GetRightPoint(_nearBoxCollider);
         Vector3 leftPoint = GetLeftPoint(_nearBoxCollider);
 
-        CustomGizmos.Isntance.DrawLine(transform.position, _nearPointToCollider, Color.blue);
-        CustomGizmos.Isntance.DrawLine(rightPoint, leftPoint, Color.green);
-        CustomGizmos.Isntance.DrawSphere(_nearBoxCollider.transform.position, 0.5f, Color.green);
+        CustomGizmos.Instance.DrawLine(transform.position, _nearPointToCollider, Color.blue);
+        CustomGizmos.Instance.DrawLine(rightPoint, leftPoint, Color.green);
+        CustomGizmos.Instance.DrawSphere(_nearBoxCollider.transform.position, 0.5f, Color.green);
       }
     }
 
