@@ -22,8 +22,8 @@ namespace Core.CodeBase.Runtime.DebugTools.CustomGizmos
         return _instance;
       }
     }
-    
-    private readonly Stack<GizmosDrawer> _drawers = new (capacity: 100);
+
+    private readonly Stack<GizmosDrawer> _drawers = new(capacity: 100);
     private Mesh _sphereMesh;
 
     private void Awake()
@@ -32,9 +32,14 @@ namespace Core.CodeBase.Runtime.DebugTools.CustomGizmos
       _sphereMesh = sphere.GetComponent<MeshFilter>().mesh;
       Destroy(sphere);
     }
+
+    public void DrawLine(Vector3 rightPoint, Vector3 leftPoint, Color green)
+    {
+      _drawers.Push(new LineDrawer(leftPoint, rightPoint, green));
+    }
+
     public void DrawSphere(Vector3 position, float radius, Color color)
     {
-      // _drawers.Push(new SphereDrawer(position, radius, color));
       _drawers.Push(new MeshDrawer(position, radius, color, _sphereMesh));
     }
 

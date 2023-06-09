@@ -22,7 +22,7 @@ namespace Core.CodeBase.Runtime.DebugTools.CustomGizmos
     public override void Draw()
     {
       Gizmos.color = _color;
-      Gizmos.DrawWireMesh(_mesh, _position, _rotation);
+      Gizmos.DrawWireMesh(_mesh, _position, _rotation, _scale);
     }
   }
 }
