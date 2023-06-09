@@ -39,6 +39,11 @@ namespace Core.CodeBase.Runtime.Gameplay
         Vector3 rightPoint = GetRightPoint(boxCollider);
         Vector3 leftPoint = GetLeftPoint(boxCollider);
         CustomGizmos.Isntance.DrawLine(rightPoint, leftPoint, Color.green);
+        Vector3 distanceToBoxCollider = transform.position - boxCollider.transform.position;
+
+        Vector3 nearPointToCollider = boxCollider.transform.position + boxCollider.transform.right * Vector3.Dot(boxCollider.transform.right, distanceToBoxCollider); // why minus
+
+        CustomGizmos.Isntance.DrawLine(transform.position, nearPointToCollider, Color.blue);
       }
     }
 
