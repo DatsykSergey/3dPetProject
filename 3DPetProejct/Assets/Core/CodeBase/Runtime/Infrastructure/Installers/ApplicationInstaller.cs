@@ -8,6 +8,8 @@ namespace Core.CodeBase.Runtime.Infrastructure.Installers
   {
     public override void InstallBindings()
     {
+      Application.targetFrameRate = 60;
+      
       Container
         .Bind<IPlayerInput>()
         .To<PlayerInput>()
@@ -18,6 +20,7 @@ namespace Core.CodeBase.Runtime.Infrastructure.Installers
     {
       base.Start();
       Cursor.visible = false;
+      Cursor.lockState = CursorLockMode.Locked;
     }
   }
 }
