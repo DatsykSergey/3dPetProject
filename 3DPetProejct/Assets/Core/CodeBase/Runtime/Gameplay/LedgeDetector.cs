@@ -11,7 +11,9 @@ namespace Core.CodeBase.Runtime.Gameplay
     private readonly Collider[] _result = new Collider[8];
     private int _count = 0;
     private Vector3 _nearPointToCollider;
-    private BoxCollider _nearBoxCollider = null;
+    public BoxCollider NearBoxCollider { get; private set; } = null;
+
+    public bool HasLedge => NearBoxCollider != null;
 
     private void FixedUpdate()
     {
@@ -32,7 +34,7 @@ namespace Core.CodeBase.Runtime.Gameplay
     private void TryFindNearestPoint()
     {
       int result = -1;
-      _nearBoxCollider = null;
+      NearBoxCollider = null;
       float minDistance = float.MaxValue;
       for (int i = 0; i < _count; i++)
       {
@@ -52,18 +54,18 @@ namespace Core.CodeBase.Runtime.Gameplay
         if (distanceToNearPoint < minDistance)
         {
           _nearPointToCollider = nearPointToCollider;
-          _nearBoxCollider = boxCollider;
+          NearBoxCollider = boxCollider;
         }
       }
 
-      if (_nearBoxCollider != null)
+      if (NearBoxCollider != null)
       {
-        Vector3 rightPoint = GetRightPoint(_nearBoxCollider);
-        Vector3 leftPoint = GetLeftPoint(_nearBoxCollider);
+        Vector3 rightPoint = GetRightPoint(NearBoxCollider);
+        Vector3 leftPoint = GetLeftPoint(NearBoxCollider);
 
         CustomGizmos.Instance.DrawLine(transform.position, _nearPointToCollider, Color.blue);
         CustomGizmos.Instance.DrawLine(rightPoint, leftPoint, Color.green);
-        CustomGizmos.Instance.DrawSphere(_nearBoxCollider.transform.position, 0.5f, Color.green);
+        CustomGizmos.Instance.DrawSphere(NearBoxCollider.transform.position, 0.5f, Color.green);
       }
     }
 
@@ -72,7 +74,7 @@ namespace Core.CodeBase.Runtime.Gameplay
       Vector3 distanceToBoxCollider = transform.position - boxCollider.transform.position;
 
       float distanceFromCenterBoxToNearPoint = Vector3.Dot(boxCollider.transform.right, distanceToBoxCollider);
-      if (distanceFromCenterBoxToNearPoint >= boxCollider.size.x * 0.5f)
+      if (Mathf.Abs(distanceFromCenterBoxToNearPoint) >= boxCollider.size.x * 0.5f)
       {
         point = default;
         return false;

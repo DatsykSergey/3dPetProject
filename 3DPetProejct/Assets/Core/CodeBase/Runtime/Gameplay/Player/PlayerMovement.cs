@@ -15,11 +15,11 @@ namespace Core.CodeBase.Runtime.Gameplay.Player
     private IPlayerInput _input;
     private Vector3 _fallVelocity;
     private const float GravityY = -9.81f;
-    private bool _isGrounded;
+    [field: SerializeField] public bool IsGrounded { get; private set; }
     private const float JumpHeight = 1.0f;
 
     private float _currentRotateVelocity;
-    
+
     [Inject]
     private void Construct(IPlayerInput input)
     {
@@ -29,9 +29,9 @@ namespace Core.CodeBase.Runtime.Gameplay.Player
 
     private void Update()
     {
-      _isGrounded = _characterController.isGrounded;
+      IsGrounded = _characterController.isGrounded;
       
-      if (_isGrounded && _fallVelocity.y < 0)
+      if (IsGrounded && _fallVelocity.y < 0)
       {
         _fallVelocity.y = 0;
       }
@@ -40,7 +40,7 @@ namespace Core.CodeBase.Runtime.Gameplay.Player
       Vector3 velocity = moveDirection * (_speed * Time.deltaTime);
       _characterController.Move(velocity);
       
-      if (_input.IsPressJump() && _isGrounded)
+      if (_input.IsPressJump() && IsGrounded)
       {
         _fallVelocity.y += Mathf.Sqrt(JumpHeight * -3.0f * GravityY);
       }
