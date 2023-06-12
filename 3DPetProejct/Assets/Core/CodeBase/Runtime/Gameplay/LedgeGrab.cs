@@ -28,9 +28,7 @@ namespace Core.CodeBase.Runtime.Gameplay
       Finding = 1,
       Grabbed = 2,
     }
-    
-    
-    
+
     [Inject]
     private void Construct(IPlayerInput playerInput)
     {

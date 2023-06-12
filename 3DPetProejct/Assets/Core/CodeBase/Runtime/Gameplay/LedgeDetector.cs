@@ -8,20 +8,14 @@ namespace Core.CodeBase.Runtime.Gameplay
   {
     [SerializeField] private OverlapBox _overlapBox = new OverlapBox();
     private Vector3 _nearPointToCollider;
-
+    
     public BoxCollider NearBoxCollider { get; private set; } = null;
 
     public bool HasLedge => NearBoxCollider != null;
-
-
+    
     private void FixedUpdate()
     {
-      if (Time.frameCount % 3 != 0)
-      {
-        return;
-      }
-
-      _overlapBox.UpdateOverlapBox(transform);
+      _overlapBox.CheckOverlap(transform);
     }
 
     private void Update()
@@ -57,12 +51,13 @@ namespace Core.CodeBase.Runtime.Gameplay
 
       if (NearBoxCollider != null)
       {
-        Vector3 rightPoint = GetRightPoint(NearBoxCollider);
-        Vector3 leftPoint = GetLeftPoint(NearBoxCollider);
+        Vector3 rightPoint = MathExtension.GetRightPoint(NearBoxCollider);
+        Vector3 leftPoint = MathExtension.GetLeftPoint(NearBoxCollider);
 
-        CustomGizmos.Instance.DrawLine(transform.position, _nearPointToCollider, Color.blue);
         CustomGizmos.Instance.DrawLine(rightPoint, leftPoint, Color.green);
-        CustomGizmos.Instance.DrawSphere(NearBoxCollider.transform.position, 0.5f, Color.green);
+        CustomGizmos.Instance.DrawSphere(NearBoxCollider.transform.position, 0.25f, Color.green);
+        CustomGizmos.Instance.DrawSphere(leftPoint, 0.25f, Color.green);
+        CustomGizmos.Instance.DrawSphere(rightPoint, 0.25f, Color.green);
       }
     }
 
@@ -79,18 +74,6 @@ namespace Core.CodeBase.Runtime.Gameplay
       
       point = boxCollider.transform.position + boxCollider.transform.right * distanceFromCenterBoxToNearPoint;
       return true;
-    }
-
-    // to math extension
-    private static Vector3 GetRightPoint(BoxCollider boxCollider)
-    {
-      return boxCollider.transform.position + boxCollider.transform.right * (boxCollider.size.x * 0.5f);
-    }
-
-    // to math extension
-    private static Vector3 GetLeftPoint(BoxCollider boxCollider)
-    {
-      return boxCollider.transform.position - boxCollider.transform.right * (boxCollider.size.x * 0.5f);
     }
 
     private void OnDrawGizmos()
