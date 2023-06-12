@@ -42,7 +42,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "SomeButton",
+                    "name": "JumpDown",
                     "type": "Button",
                     "id": "a336ccd0-94c8-48f3-a393-a4a55c9b87cf",
                     "expectedControlType": "Button",
@@ -143,11 +143,11 @@
                 {
                     "name": "",
                     "id": "aa3e2b8d-3856-49cc-861c-489c97d1e20f",
-                    "path": "<Keyboard>/e",
+                    "path": "<Keyboard>/c",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "SomeButton",
+                    "action": "JumpDown",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
