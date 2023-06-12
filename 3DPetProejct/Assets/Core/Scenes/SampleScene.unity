@@ -6532,11 +6532,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f91e053e15604c0ba1939dbf50493cd4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _boxSize: {x: 0.5, y: 0.5, z: 0.5}
-  _boxOffset: {x: 0, y: 0, z: 0.42}
-  _layerMask:
-    serializedVersion: 2
-    m_Bits: 128
+  _overlapBox:
+    <Size>k__BackingField: {x: 0.5, y: 0.5, z: 0.5}
+    <Offset>k__BackingField: {x: 0, y: 0, z: 0.42}
+    _layerMask:
+      serializedVersion: 2
+      m_Bits: 128
 --- !u!1 &1688918883
 GameObject:
   m_ObjectHideFlags: 0
@@ -8254,7 +8255,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1892233811}
-  m_LocalRotation: {x: -0.040848196, y: 0.9557088, z: -0.1604295, w: -0.2433404}
+  m_LocalRotation: {x: -0.040848196, y: 0.9557088, z: -0.16042951, w: -0.2433404}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
