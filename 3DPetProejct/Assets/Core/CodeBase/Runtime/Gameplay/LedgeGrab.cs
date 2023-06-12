@@ -19,14 +19,20 @@ namespace Core.CodeBase.Runtime.Gameplay
     [SerializeField] private bool _hasObstacle = false;
     [SerializeField] private float _moveSpeed = 1f;
 
+    [Header("jump to other ledge")]
+    [SerializeField] private NeighbourLedge _leftNeighbourLedge;
+    [SerializeField] private NeighbourLedge _rightNeighbourLedge;
+
     private IPlayerInput _playerInput;
-    private GrabState _currentState = GrabState.Finding;
+    [SerializeField] private GrabState _currentState = GrabState.Finding;
+    [SerializeField] private float _jumpToNearLedgeSpeed = 1f;
 
     private enum GrabState
     {
       None = 0,
       Finding = 1,
       Grabbed = 2,
+      JumpMove = 3,
     }
 
     [Inject]
@@ -49,16 +55,11 @@ namespace Core.CodeBase.Runtime.Gameplay
 
     private void Update()
     {
-      if (_currentState == GrabState.None)
-      {
-        return;
-      }
-      
       if (_currentState == GrabState.Finding)
       {
         TryFindLedge();
       }
-      else
+      else if(_currentState == GrabState.Grabbed)
       {
         MoveAlongLedge();
 
@@ -66,6 +67,17 @@ namespace Core.CodeBase.Runtime.Gameplay
         {
           JumpDown();
         }
+
+        if (_playerInput.IsPressJump())
+        {
+          Vector2 moveDirection = _playerInput.GetMoveDirection();
+          Vector3 nearPoint; 
+          if ((moveDirection.x > 0 && _rightNeighbourLedge.TryFindNearPoint(out nearPoint)) ||
+              moveDirection.x < 0 && _leftNeighbourLedge.TryFindNearPoint(out nearPoint))
+          {
+            StartMoveToPoint(nearPoint);
+          }
+        }  
       }
     }
 
@@ -112,13 +124,25 @@ namespace Core.CodeBase.Runtime.Gameplay
       StartCoroutine(JumpingDown());
     }
 
+    private void JumpUp()
+    {
+      StopAllCoroutines();
+      StartCoroutine(JumpingUp());
+    }
+
+    private void StartMoveToPoint(Vector3 point)
+    {
+      StopAllCoroutines();
+      StartCoroutine(MovingToPoint(point));
+    }
+
     private void SetPositionToLedge()
     {
       Vector3 rootForward = -_centerObstacleChecker.HitNormal;
       rootForward.y = 0;
       rootForward.Normalize();
       _root.forward = rootForward;
-      _root.position += (_centerObstacleChecker.HitPoint - _climbPoint.position);
+      SetRelativeRootPosition(_centerObstacleChecker.HitPoint);
     }
 
     private IEnumerator JumpingDown()
@@ -130,6 +154,35 @@ namespace Core.CodeBase.Runtime.Gameplay
       
       yield return new WaitForSeconds(0.5f);
       _currentState = GrabState.Finding;
+    }
+
+    private IEnumerator JumpingUp()
+    {
+      _currentState = GrabState.None;
+      _hasObstacle = false;
+      _playerMovement.UnfreezeMovement();
+      _playerMovement.JumpUp();
+      
+      yield return new WaitForSeconds(0.5f);
+      _currentState = GrabState.Finding;
+    }
+
+    private IEnumerator MovingToPoint(Vector3 point)
+    {
+      _currentState = GrabState.JumpMove;
+      while ((_climbPoint.position - point).sqrMagnitude > MathExtension.SqrDistanceAccuracy)
+      {
+        Vector3 moveTowards = Vector3.MoveTowards(_climbPoint.position, point, _jumpToNearLedgeSpeed * Time.deltaTime);
+        SetRelativeRootPosition(moveTowards);
+        yield return null;
+      }
+      SetRelativeRootPosition(point);
+      _currentState = GrabState.Grabbed;
+    }
+
+    private void SetRelativeRootPosition(Vector3 position)
+    {
+      _root.position += (position - _climbPoint.position);
     }
   }
 }

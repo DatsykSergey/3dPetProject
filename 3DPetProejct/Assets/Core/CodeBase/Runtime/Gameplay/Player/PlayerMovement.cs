@@ -42,7 +42,7 @@ namespace Core.CodeBase.Runtime.Gameplay.Player
       
       if (_input.IsPressJump() && IsGrounded)
       {
-        _fallVelocity.y += Mathf.Sqrt(JumpHeight * -3.0f * GravityY);
+        JumpUp();
       }
 
       _fallVelocity.y += GravityY * Time.deltaTime;
@@ -70,6 +70,11 @@ namespace Core.CodeBase.Runtime.Gameplay.Player
     {
       _fallVelocity.y = 0f;
       enabled = true;
+    }
+
+    public void JumpUp()
+    {
+      _fallVelocity.y += Mathf.Sqrt(JumpHeight * -3.0f * GravityY);
     }
   }
 }

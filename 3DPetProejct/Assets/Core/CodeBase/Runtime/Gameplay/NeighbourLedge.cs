@@ -41,8 +41,8 @@ namespace Core.CodeBase.Runtime.Gameplay
       for (int i = 0; i < _overlapBox.Count; i++)
       {
         BoxCollider boxCollider = _overlapBox.Result[i] as BoxCollider;
-        Vector3 leftPoint = MathExtension.GetLeftPoint(boxCollider);
-        Vector3 rightPoint = MathExtension.GetRightPoint(boxCollider);
+        Vector3 leftPoint = MathExtension.GetLeftPoint(boxCollider, 0.3f);
+        Vector3 rightPoint = MathExtension.GetRightPoint(boxCollider, 0.3f);
 
         float sqrDistance = (transform.position - leftPoint).sqrMagnitude;
         if (sqrDistance < minDistance)
