@@ -1,19 +1,18 @@
-﻿using Core.CodeBase.Runtime.DebugTools.CustomGizmos;
+﻿using System;
+using Core.CodeBase.Runtime.DebugTools.CustomGizmos;
 using UnityEngine;
 
 namespace Core.CodeBase.Runtime.Gameplay
 {
   public class LedgeDetector : MonoBehaviour
   {
-    [SerializeField] private Vector3 _boxSize = Vector3.one;
-    [SerializeField] private Vector3 _boxOffset = Vector3.zero;
-    [SerializeField] private LayerMask _layerMask;
-    private readonly Collider[] _result = new Collider[8];
-    private int _count = 0;
+    [SerializeField] private OverlapBox _overlapBox = new OverlapBox();
     private Vector3 _nearPointToCollider;
+
     public BoxCollider NearBoxCollider { get; private set; } = null;
 
     public bool HasLedge => NearBoxCollider != null;
+
 
     private void FixedUpdate()
     {
@@ -22,8 +21,7 @@ namespace Core.CodeBase.Runtime.Gameplay
         return;
       }
 
-      _count = Physics.OverlapBoxNonAlloc(transform.TransformPoint(_boxOffset), _boxSize, _result, transform.rotation, _layerMask,
-        QueryTriggerInteraction.UseGlobal);
+      _overlapBox.UpdateOverlapBox(transform);
     }
 
     private void Update()
@@ -33,12 +31,11 @@ namespace Core.CodeBase.Runtime.Gameplay
 
     private void TryFindNearestPoint()
     {
-      int result = -1;
       NearBoxCollider = null;
       float minDistance = float.MaxValue;
-      for (int i = 0; i < _count; i++)
+      for (int i = 0; i < _overlapBox.Count; i++)
       {
-        BoxCollider boxCollider = _result[i] as BoxCollider;
+        BoxCollider boxCollider = _overlapBox.Result[i] as BoxCollider;
         if (boxCollider == null)
         {
           Debug.LogWarning("Find not box collider Ledge");
@@ -84,11 +81,13 @@ namespace Core.CodeBase.Runtime.Gameplay
       return true;
     }
 
+    // to math extension
     private static Vector3 GetRightPoint(BoxCollider boxCollider)
     {
       return boxCollider.transform.position + boxCollider.transform.right * (boxCollider.size.x * 0.5f);
     }
 
+    // to math extension
     private static Vector3 GetLeftPoint(BoxCollider boxCollider)
     {
       return boxCollider.transform.position - boxCollider.transform.right * (boxCollider.size.x * 0.5f);
@@ -96,9 +95,7 @@ namespace Core.CodeBase.Runtime.Gameplay
 
     private void OnDrawGizmos()
     {
-      Gizmos.color = Color.blue;
-      Gizmos.matrix = Matrix4x4.TRS(transform.TransformPoint(_boxOffset), transform.rotation, Vector3.one);
-      Gizmos.DrawWireCube(Vector3.zero, _boxSize * 2);
+      _overlapBox.DrawGizmos(transform);
     }
   }
 }
