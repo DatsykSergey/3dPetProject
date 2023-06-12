@@ -49,6 +49,11 @@ namespace Core.CodeBase.Runtime.Infrastructure.Services.Input
       return _playerActions.Gameplay.Jump.IsPressed();
     }
 
+    public bool IsPressJumpDown()
+    {
+      return _playerActions.Gameplay.JumpDown.IsPressed();
+    }
+
     private void OnStopButtonClick(InputAction.CallbackContext obj)
     {
       if (EditorApplication.isPlaying)

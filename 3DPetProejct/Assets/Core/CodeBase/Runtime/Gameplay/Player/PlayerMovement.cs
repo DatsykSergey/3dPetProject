@@ -16,7 +16,7 @@ namespace Core.CodeBase.Runtime.Gameplay.Player
     private Vector3 _fallVelocity;
     private const float GravityY = -9.81f;
     [field: SerializeField] public bool IsGrounded { get; private set; }
-    private const float JumpHeight = 1.0f;
+    private const float JumpHeight = 1.2f;
 
     private float _currentRotateVelocity;
 
@@ -59,6 +59,17 @@ namespace Core.CodeBase.Runtime.Gameplay.Player
       float newAngel = Mathf.SmoothDampAngle(transform.eulerAngles.y, angel, ref _currentRotateVelocity, _rotationSpeed);
       
       transform.rotation = Quaternion.Euler(0f, newAngel, 0f);
+    }
+
+    public void FreezeMovement()
+    {
+      enabled = false;
+    }
+
+    public void UnfreezeMovement()
+    {
+      _fallVelocity.y = 0f;
+      enabled = true;
     }
   }
 }

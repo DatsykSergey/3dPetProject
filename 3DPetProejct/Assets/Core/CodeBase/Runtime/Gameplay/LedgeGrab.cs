@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using Core.CodeBase.Runtime.Gameplay.Player;
 using Core.CodeBase.Runtime.Infrastructure.Services.Input;
 using UnityEngine;
@@ -14,12 +15,22 @@ namespace Core.CodeBase.Runtime.Gameplay
     [SerializeField] private ObstacleChecker _rightObstacleChecker;
     [SerializeField] private LedgeDetector _ledgeDetector;
     [SerializeField] private PlayerMovement _playerMovement;
+    [SerializeField] private Transform _climbPoint;
     [SerializeField] private bool _hasObstacle = false;
     [SerializeField] private float _moveSpeed = 1f;
 
     private IPlayerInput _playerInput;
-    private bool _isActive = false;
+    private GrabState _currentState = GrabState.Finding;
 
+    private enum GrabState
+    {
+      None = 0,
+      Finding = 1,
+      Grabbed = 2,
+    }
+    
+    
+    
     [Inject]
     private void Construct(IPlayerInput playerInput)
     {
@@ -28,20 +39,35 @@ namespace Core.CodeBase.Runtime.Gameplay
 
     private void StartClimb()
     {
-      _playerMovement.enabled = false;
-      _isActive = true;
+      if (_centerObstacleChecker.HasObstacle == false)
+      {
+        return;
+      }
+
+      _playerMovement.FreezeMovement();
+      _currentState = GrabState.Grabbed;
       SetPositionToLedge();
     }
 
     private void Update()
     {
-      if (_isActive == false)
+      if (_currentState == GrabState.None)
+      {
+        return;
+      }
+      
+      if (_currentState == GrabState.Finding)
       {
         TryFindLedge();
       }
       else
       {
         MoveAlongLedge();
+
+        if (_playerInput.IsPressJumpDown())
+        {
+          JumpDown();
+        }
       }
     }
 
@@ -76,6 +102,16 @@ namespace Core.CodeBase.Runtime.Gameplay
           _root.position -= _ledgeDetector.NearBoxCollider.transform.right * (_moveSpeed * Time.deltaTime);
         }
       }
+      else
+      {
+        JumpDown();
+      }
+    }
+
+    private void JumpDown()
+    {
+      StopAllCoroutines();
+      StartCoroutine(JumpingDown());
     }
 
     private void SetPositionToLedge()
@@ -84,7 +120,18 @@ namespace Core.CodeBase.Runtime.Gameplay
       rootForward.y = 0;
       rootForward.Normalize();
       _root.forward = rootForward;
-      _root.position += (_centerObstacleChecker.HitPoint - transform.position);
+      _root.position += (_centerObstacleChecker.HitPoint - _climbPoint.position);
+    }
+
+    private IEnumerator JumpingDown()
+    {
+      _currentState = GrabState.None;
+      _hasObstacle = false;
+      _playerMovement.UnfreezeMovement();
+
+      
+      yield return new WaitForSeconds(0.5f);
+      _currentState = GrabState.Finding;
     }
   }
 }

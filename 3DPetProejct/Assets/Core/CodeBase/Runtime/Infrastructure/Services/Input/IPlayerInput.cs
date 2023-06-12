@@ -9,5 +9,6 @@ namespace Core.CodeBase.Runtime.Infrastructure.Services.Input
     Vector2 GetLookDelta();
     Vector3 GetCameraRelativeMoveDirection();
     bool IsPressJump();
+    bool IsPressJumpDown();
   }
 }
