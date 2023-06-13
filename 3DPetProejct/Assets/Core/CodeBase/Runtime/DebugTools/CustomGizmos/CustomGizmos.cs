@@ -49,7 +49,12 @@ namespace Core.CodeBase.Runtime.DebugTools.CustomGizmos
 
     public void DrawText(Vector3 position, string text, Color color)
     {
-      Instance._drawers.Push(new DrawText(position, text, color));
+      _drawers.Push(new DrawText(position, text, color));
+    }
+
+    public void DrawBoxCast(Vector3 position, Quaternion rotation, Vector3 forward, Vector3 boxSize, float hitsDistance, Color color)
+    {
+      _drawers.Push(new CubeCastDrawer(position, rotation, forward, boxSize, hitsDistance, color));
     }
 
     private void OnDrawGizmos()
