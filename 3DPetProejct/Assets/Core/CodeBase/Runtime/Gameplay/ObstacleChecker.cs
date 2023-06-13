@@ -11,7 +11,7 @@ namespace Core.CodeBase.Runtime.Gameplay
     [SerializeField] private LayerMask _layerMask;
 
     private RaycastHit _hits;
-    public bool HasObstacle { get; private set; }
+    [field:SerializeField] public bool HasObstacle { get; private set; }
     public Vector3 HitPoint => _hits.point;
     public Vector3 HitNormal => _hits.normal;
 
@@ -19,12 +19,7 @@ namespace Core.CodeBase.Runtime.Gameplay
     {
       Ray ray = new Ray(transform.position, transform.forward);
       HasObstacle = Physics.SphereCast(ray, _castRadius, out _hits, _castDistance, _layerMask);
-      
-      if (HasObstacle && HitPoint == Vector3.zero)
-      {
-        Debug.Log("1111");
-        Debug.Log($"{HitPoint} {HitPoint} {_hits.collider != null}");
-      }
+      // HasObstacle = Physics.Raycast(transform.position,transform.forward, out _hits, _castDistance, _layerMask);
     }
 
     private void Update()

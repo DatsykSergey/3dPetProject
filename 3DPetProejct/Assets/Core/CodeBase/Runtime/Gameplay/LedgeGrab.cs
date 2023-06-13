@@ -22,6 +22,7 @@ namespace Core.CodeBase.Runtime.Gameplay
     [Header("jump to other ledge")]
     [SerializeField] private NeighbourLedge _leftNeighbourLedge;
     [SerializeField] private NeighbourLedge _rightNeighbourLedge;
+    [SerializeField] private NeighbourLedge _upNeighbourLedge;
 
     private IPlayerInput _playerInput;
     [SerializeField] private GrabState _currentState = GrabState.Finding;
@@ -48,6 +49,7 @@ namespace Core.CodeBase.Runtime.Gameplay
         return;
       }
 
+      Debug.Log("StartClimb");
       _playerMovement.FreezeMovement();
       _currentState = GrabState.Grabbed;
       SetPositionToLedge();
@@ -73,7 +75,8 @@ namespace Core.CodeBase.Runtime.Gameplay
           Vector2 moveDirection = _playerInput.GetMoveDirection();
           Vector3 nearPoint; 
           if ((moveDirection.x > 0 && _rightNeighbourLedge.TryFindNearPoint(out nearPoint)) ||
-              moveDirection.x < 0 && _leftNeighbourLedge.TryFindNearPoint(out nearPoint))
+              moveDirection.x < 0 && _leftNeighbourLedge.TryFindNearPoint(out nearPoint) ||
+              moveDirection.y > 0 && _upNeighbourLedge.TryFindNearPoint(out nearPoint))
           {
             StartMoveToPoint(nearPoint);
           }
