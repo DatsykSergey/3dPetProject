@@ -32,9 +32,9 @@ namespace Core.CodeBase.Runtime.DebugTools.CustomGizmos
       Destroy(sphere);
     }
 
-    public void DrawLine(Vector3 rightPoint, Vector3 leftPoint, Color green)
+    public void DrawLine(Vector3 rightPoint, Vector3 leftPoint, Color green, bool markBeginEnd = true)
     {
-      _drawers.Push(new LineDrawer(leftPoint, rightPoint, green));
+      _drawers.Push(new LineDrawer(leftPoint, rightPoint, green, markBeginEnd));
     }
 
     public void DrawSphere(Vector3 position, float radius, Color color)
@@ -45,6 +45,11 @@ namespace Core.CodeBase.Runtime.DebugTools.CustomGizmos
     public void DrawSphereCast(Vector3 position, Vector3 direction, float radius, float distance, Color color)
     {
       _drawers.Push(new SphereCastDrawer(position, direction, radius, distance, color));
+    }
+
+    public void DrawText(Vector3 position, string text, Color color)
+    {
+      Instance._drawers.Push(new DrawText(position, text, color));
     }
 
     private void OnDrawGizmos()

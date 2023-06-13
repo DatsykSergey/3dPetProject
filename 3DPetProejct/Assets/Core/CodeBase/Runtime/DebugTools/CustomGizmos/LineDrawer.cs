@@ -7,18 +7,24 @@ namespace Core.CodeBase.Runtime.DebugTools.CustomGizmos
     private readonly Vector3 _firstPoint;
     private readonly Vector3 _secondPoint;
     private readonly Color _color;
+    private readonly bool _markBeginEnd;
 
-    public LineDrawer(Vector3 firstPoint, Vector3 secondPoint, Color color)
+    public LineDrawer(Vector3 firstPoint, Vector3 secondPoint, Color color, bool markBeginEnd)
     {
       _firstPoint = firstPoint;
       _secondPoint = secondPoint;
       _color = color;
+      _markBeginEnd = markBeginEnd;
     }
 
     public override void Draw()
     {
       Gizmos.color = _color;
       Gizmos.DrawLine(_firstPoint, _secondPoint);
+      if (_markBeginEnd == false)
+      {
+        return;
+      }
       Vector3 line1 = _secondPoint - _firstPoint;
       Vector3 line2 = new Vector3(line1.z, line1.y, -line1.x).normalized;
       Vector3 line3 = Vector3.Cross(line2, line1).normalized;
