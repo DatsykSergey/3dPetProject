@@ -8,11 +8,15 @@ namespace Core.CodeBase.Runtime.Gameplay
     [field: SerializeField] public Vector3 Size { get; set; } = Vector3.one;
     [field: SerializeField] public Vector3 Offset { get; set; } = Vector3.zero;
     [SerializeField] private LayerMask _layerMask;
-    public Collider[] Result { get; } = new Collider[8];
+    public Collider[] Result { get; private set; } = new Collider[8];
     public int Count { get; set; } = 0;
 
     public bool IsDrawGizmos = true;
 
+    public void SetResultSize(int size)
+    {
+      Result = new Collider[size];
+    }
 
     public void CheckOverlap(Transform root)
     {
