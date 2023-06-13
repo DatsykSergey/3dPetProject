@@ -9,6 +9,7 @@ namespace Core.CodeBase.Runtime.Gameplay
   public class NearLedgeFinder : MonoBehaviour
   {
     [SerializeField] private OverlapBox _overlapBox;
+    [SerializeField] private float _minDistance = 0.5f;
     private IPlayerInput _playerInput;
 
     private Vector3 RootPosition => transform.position;
@@ -21,7 +22,7 @@ namespace Core.CodeBase.Runtime.Gameplay
 
     private void Awake()
     {
-      _overlapBox.SetResultSize(12);
+      _overlapBox.SetResultSize(24);
     }
 
     private void FixedUpdate()
@@ -43,11 +44,18 @@ namespace Core.CodeBase.Runtime.Gameplay
 
       float maxDot = float.MinValue;
       int resultIndex = -1;
+      float sqrMinDistance = _minDistance * _minDistance;
       for (int i = 0; i < _overlapBox.Count; i++)
       {
         Vector3 colliderPosition = _overlapBox.Result[i].transform.position;
-        Vector3 toCollider = (colliderPosition - RootPosition).normalized;
-        float dot = Vector3.Dot(toCollider, moveDirection);
+        Vector3 toCollider = (colliderPosition - RootPosition);
+        float sqrDistance = toCollider.sqrMagnitude;
+        if (sqrDistance < sqrMinDistance)
+        {
+          continue;
+        }
+        
+        float dot = (Vector3.Dot(toCollider.normalized, moveDirection) - 0.85f) / sqrDistance;
         CustomGizmos.Instance.DrawText(colliderPosition, $"{dot.ToString("F4")}", Color.green);
         if (maxDot < dot)
         {
