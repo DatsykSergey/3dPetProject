@@ -10,9 +10,9 @@ namespace Core.CodeBase.Runtime.Gameplay
   public class LedgeGrab : MonoBehaviour
   {
     [SerializeField] private Transform _root;
-    [SerializeField] private ObstacleChecker _leftObstacleChecker;
-    [SerializeField] private ObstacleChecker _centerObstacleChecker;
-    [SerializeField] private ObstacleChecker _rightObstacleChecker;
+    [SerializeField] private ObstacleCheckerBySphere _leftObstacleChecker;
+    [SerializeField] private ObstacleCheckerBySphere _centerObstacleChecker;
+    [SerializeField] private ObstacleCheckerBySphere _rightObstacleChecker;
     [SerializeField] private LedgeDetector _ledgeDetector;
     [SerializeField] private PlayerMovement _playerMovement;
     [SerializeField] private Transform _climbPoint;
