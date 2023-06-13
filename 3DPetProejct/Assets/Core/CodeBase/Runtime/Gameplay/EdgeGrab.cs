@@ -11,6 +11,8 @@ namespace Core.CodeBase.Runtime.Gameplay
     [SerializeField] private EdgeFinder _edgeFinder;
     [SerializeField] private PlayerMovement _playerMovement;
     [SerializeField] private Transform _grabTransform;
+    [SerializeField] private Transform _footTransform;
+    [SerializeField] private float _moveSpeed = 5f;
   
     private EdgeGrabState _currentState = EdgeGrabState.None;
     private IPlayerInput _playerInput;
@@ -37,10 +39,16 @@ namespace Core.CodeBase.Runtime.Gameplay
         GrabEdge(_edgeFinder.EdgePoint);
       }
 
-      if (_currentState == EdgeGrabState.Grabbed && 
-          (_edgeFinder.IsHasPoint == false || _playerInput.IsPressJumpDown()))
+      if (_currentState == EdgeGrabState.Grabbed)
       {
-        JumpDown();
+        if(_edgeFinder.IsHasPoint == false || _playerInput.IsPressJumpDown())
+        {
+          JumpDown();
+        }
+        else if (_playerInput.IsPressJump())
+        {
+          MoveOnEdge();
+        }
       }
     }
 
@@ -58,11 +66,34 @@ namespace Core.CodeBase.Runtime.Gameplay
       StartCoroutine(StartJumpDown());
     }
 
+    private void MoveOnEdge()
+    {
+      StopAllCoroutines();
+      StartCoroutine(StartMoveOnEdge());
+    }
+
     private IEnumerator StartJumpDown()
     {
       _playerMovement.UnfreezeMovement();
       _currentState = EdgeGrabState.Move;
       yield return new WaitForSeconds(0.5f);
+      _currentState = EdgeGrabState.None;
+    }
+
+    private IEnumerator StartMoveOnEdge()
+    {
+      _currentState = EdgeGrabState.Move;
+      
+      Vector3 toEdgePoint = _edgeFinder.EdgePoint - _footTransform.position;
+      while (toEdgePoint.sqrMagnitude > MathExtension.SqrDistanceAccuracy)
+      {
+        _playerMovement.transform.position = Vector3.MoveTowards(_playerMovement.transform.position, _playerMovement.transform.position + toEdgePoint, _moveSpeed * Time.deltaTime);
+        toEdgePoint = _edgeFinder.EdgePoint - _footTransform.position;
+        yield return null;
+      }
+      
+      _playerMovement.transform.position += toEdgePoint;
+      _playerMovement.UnfreezeMovement();
       _currentState = EdgeGrabState.None;
     }
   }
