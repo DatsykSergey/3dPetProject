@@ -38,7 +38,7 @@ namespace Core.CodeBase.Runtime.Gameplay
           _playerMovement.IsGrounded == false && 
           _edgeFinder.IsHasPoint)
       {
-        GrabEdge(_edgeFinder.EdgePoint);
+        GrabEdge(_edgeFinder.EdgePoint, -_edgeFinder.Normal);
       }
 
       if (_currentState == EdgeGrabState.Grabbed)
@@ -63,19 +63,20 @@ namespace Core.CodeBase.Runtime.Gameplay
       float horizontalMovement = _playerInput.GetMoveDirection().x;
       if (horizontalMovement > 0 && _right.IsHasPoint)
       {
-        MoveToSideways(_right.EdgePoint);
+        MoveToSideways(_right.EdgePoint, -_right.Normal);
       }
       if (horizontalMovement < 0 && _left.IsHasPoint)
       {
-        MoveToSideways(_left.EdgePoint);
+        MoveToSideways(_left.EdgePoint, -_left.Normal);
       }
     }
 
-    private void GrabEdge(Vector3 point)
+    private void GrabEdge(Vector3 point, Vector3 forward)
     {
       Vector3 shit = point - _grabTransform.position;
       _playerMovement.FreezeMovement();
       _playerMovement.transform.position += shit;
+      _playerMovement.transform.forward = forward;
       _currentState = EdgeGrabState.Grabbed;
     }
 
@@ -91,10 +92,10 @@ namespace Core.CodeBase.Runtime.Gameplay
       StartCoroutine(StartMoveOnEdge());
     }
     
-    private void MoveToSideways(Vector3 newPosition)
+    private void MoveToSideways(Vector3 newPosition, Vector3 forward)
     {
       StopAllCoroutines();
-      StartCoroutine(StartMoveToSideways(newPosition));
+      StartCoroutine(StartMoveToSideways(newPosition, forward));
     }
 
     private IEnumerator StartJumpDown()
@@ -122,7 +123,7 @@ namespace Core.CodeBase.Runtime.Gameplay
       _currentState = EdgeGrabState.None;
     }
 
-    private IEnumerator StartMoveToSideways(Vector3 newPosition)
+    private IEnumerator StartMoveToSideways(Vector3 newPosition, Vector3 forward)
     {
       _currentState = EdgeGrabState.Move;
       
@@ -134,7 +135,7 @@ namespace Core.CodeBase.Runtime.Gameplay
         yield return null;
       }
 
-      GrabEdge(newPosition);
+      GrabEdge(newPosition, forward);
     }
   }
 }
