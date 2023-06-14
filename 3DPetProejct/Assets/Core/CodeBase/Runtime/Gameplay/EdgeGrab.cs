@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using Core.CodeBase.Runtime.Gameplay.Player;
 using Core.CodeBase.Runtime.Infrastructure.Services.Input;
+using CustomTools.Core.CodeBase.Tools.CustomProperty;
 using UnityEngine;
 using Zenject;
 
@@ -16,7 +17,7 @@ namespace Core.CodeBase.Runtime.Gameplay
     [SerializeField] private Transform _footTransform;
     [SerializeField] private float _moveSpeed = 5f;
   
-    private EdgeGrabState _currentState = EdgeGrabState.None;
+    [SerializeField, Readonly] private EdgeGrabState _currentState = EdgeGrabState.None;
     private IPlayerInput _playerInput;
 
     private enum EdgeGrabState
