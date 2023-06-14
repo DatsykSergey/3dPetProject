@@ -28,8 +28,10 @@ namespace Core.CodeBase.Runtime.Gameplay
       
       Gizmos.color = Color.blue;
       Gizmos.DrawLine(transform.position, transform.position + transform.forward * _castDistance);
+      Matrix4x4 matrix = Gizmos.matrix;
       Gizmos.matrix = transform.localToWorldMatrix;
       Gizmos.DrawCube(Vector3.zero, _halfBoxSize * 2f);
+      Gizmos.matrix = matrix;
     }
   }
 }

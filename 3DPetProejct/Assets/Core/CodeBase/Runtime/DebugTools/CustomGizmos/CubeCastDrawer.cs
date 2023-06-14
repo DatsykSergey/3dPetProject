@@ -25,9 +25,12 @@ namespace Core.CodeBase.Runtime.DebugTools.CustomGizmos
     {
       Gizmos.color = _color;
       Gizmos.DrawLine(_position, _position + _forward * _hitsDistance);
+      Matrix4x4 matrix = Gizmos.matrix;
+      Debug.Log(matrix.ToString());
       Gizmos.matrix = Matrix4x4.TRS(_position, _rotation, Vector3.one);
       Gizmos.DrawWireCube(Vector3.zero, _boxSize);
       Gizmos.DrawWireCube(Vector3.forward * _hitsDistance, _boxSize);
+      Gizmos.matrix = matrix;
     }
   }
 }
