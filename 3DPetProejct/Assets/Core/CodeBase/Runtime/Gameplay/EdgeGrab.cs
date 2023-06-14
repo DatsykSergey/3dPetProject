@@ -8,6 +8,8 @@ namespace Core.CodeBase.Runtime.Gameplay
 {
   public class EdgeGrab : MonoBehaviour
   {
+    [SerializeField] private EdgeFinder _left;
+    [SerializeField] private EdgeFinder _right;
     [SerializeField] private EdgeFinder _edgeFinder;
     [SerializeField] private PlayerMovement _playerMovement;
     [SerializeField] private Transform _grabTransform;
@@ -41,14 +43,31 @@ namespace Core.CodeBase.Runtime.Gameplay
 
       if (_currentState == EdgeGrabState.Grabbed)
       {
-        if(_edgeFinder.IsHasPoint == false || _playerInput.IsPressJumpDown())
-        {
-          JumpDown();
-        }
-        else if (_playerInput.IsPressJump())
-        {
-          MoveOnEdge();
-        }
+        UpdatePosition();
+      }
+    }
+
+    private void UpdatePosition()
+    {
+      if (_edgeFinder.IsHasPoint == false || _playerInput.IsPressJumpDown())
+      {
+        JumpDown();
+        return;
+      }
+      if (_playerInput.IsPressJump())
+      {
+        MoveOnEdge();
+        return;
+      }
+
+      float horizontalMovement = _playerInput.GetMoveDirection().x;
+      if (horizontalMovement > 0 && _right.IsHasPoint)
+      {
+        MoveToSideways(_right.EdgePoint);
+      }
+      if (horizontalMovement < 0 && _left.IsHasPoint)
+      {
+        MoveToSideways(_left.EdgePoint);
       }
     }
 
@@ -70,6 +89,12 @@ namespace Core.CodeBase.Runtime.Gameplay
     {
       StopAllCoroutines();
       StartCoroutine(StartMoveOnEdge());
+    }
+    
+    private void MoveToSideways(Vector3 newPosition)
+    {
+      StopAllCoroutines();
+      StartCoroutine(StartMoveToSideways(newPosition));
     }
 
     private IEnumerator StartJumpDown()
@@ -95,6 +120,21 @@ namespace Core.CodeBase.Runtime.Gameplay
       _playerMovement.transform.position += toEdgePoint;
       _playerMovement.UnfreezeMovement();
       _currentState = EdgeGrabState.None;
+    }
+
+    private IEnumerator StartMoveToSideways(Vector3 newPosition)
+    {
+      _currentState = EdgeGrabState.Move;
+      
+      Vector3 toEdgePoint = newPosition - _grabTransform.position;
+      while (toEdgePoint.sqrMagnitude > MathExtension.SqrDistanceAccuracy)
+      {
+        _playerMovement.transform.position = Vector3.MoveTowards(_playerMovement.transform.position, _playerMovement.transform.position + toEdgePoint, _moveSpeed * Time.deltaTime);
+        toEdgePoint = newPosition - _grabTransform.position;
+        yield return null;
+      }
+
+      GrabEdge(newPosition);
     }
   }
 }
