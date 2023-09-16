@@ -57,7 +57,7 @@ namespace Core.CodeBase.Runtime.Gameplay
         
         float dot = (Vector3.Dot(toCollider.normalized, moveDirection) - 0.85f) / sqrDistance;
         CustomGizmos.Instance.DrawText(colliderPosition, $"{dot.ToString("F4")}", Color.green);
-        if (maxDot < dot)
+        if (dot > 0 && maxDot < dot)
         {
           maxDot = dot;
           resultIndex = i;
