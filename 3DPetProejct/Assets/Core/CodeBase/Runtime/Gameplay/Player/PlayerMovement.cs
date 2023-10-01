@@ -10,7 +10,7 @@ namespace Core.CodeBase.Runtime.Gameplay.Player
     [SerializeField] private float _rotationSpeed;
     
     [SerializeField] private CharacterController _characterController;
-    [SerializeField] private PlayerAnimator _animator;
+    [SerializeField] private Animations.PlayerAnimator _animator;
     
     private IPlayerInput _input;
     private Vector3 _fallVelocity;
@@ -50,7 +50,7 @@ namespace Core.CodeBase.Runtime.Gameplay.Player
 
       float forwardVelocity = Vector3.Dot(moveDirection, transform.forward);
       float rightVelocity = Vector3.Dot(moveDirection, transform.right);
-      _animator?.UpdateMovement(forwardVelocity, rightVelocity);
+      _animator?.UpdateMovement(moveDirection);
 
       if (moveDirection == Vector3.zero)
         return;
