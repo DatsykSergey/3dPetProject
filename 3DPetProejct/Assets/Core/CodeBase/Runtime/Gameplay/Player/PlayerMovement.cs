@@ -10,7 +10,7 @@ namespace Core.CodeBase.Runtime.Gameplay.Player
     [SerializeField] private float _rotationSpeed;
     
     [SerializeField] private CharacterController _characterController;
-    [SerializeField] private Animations.PlayerAnimator _animator;
+    [SerializeField] private Animations.Simple.PlayerAnimator _animator;
     
     private IPlayerInput _input;
     private Vector3 _fallVelocity;
