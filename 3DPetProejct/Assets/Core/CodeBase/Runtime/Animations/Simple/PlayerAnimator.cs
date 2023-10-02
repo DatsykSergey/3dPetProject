@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Core.CodeBase.Runtime.Animations.Simple
 {
@@ -9,6 +10,10 @@ namespace Core.CodeBase.Runtime.Animations.Simple
     [SerializeField] private Transform _camera;
     
     private readonly int VerticalHash = Animator.StringToHash("Vertical");
+
+    private void OnEnable()
+    {
+    }
 
     public override void UpdateMovement(Vector3 velocity)
     {
