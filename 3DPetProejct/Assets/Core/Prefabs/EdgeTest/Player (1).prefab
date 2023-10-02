@@ -224,6 +224,7 @@ GameObject:
   - component: {fileID: 6017944635342713061}
   - component: {fileID: 453199036488346285}
   - component: {fileID: 3269116052942676012}
+  - component: {fileID: 3539594366254273844}
   m_Layer: 0
   m_Name: Model
   m_TagString: Untagged
@@ -298,6 +299,25 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &3539594366254273844
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3357545420782190954}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aeb2fa3c4cdc438b8c6d582c80e979b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _animator: {fileID: 9147877617141473889}
+  _maxDelta: 0.5
+  _idleClip: {fileID: -203655887218126122, guid: 3973a21acf5fe3e499e199be79f98992,
+    type: 3}
+  _forward: {fileID: -203655887218126122, guid: f17c5408cb00da447811fb9fed560406,
+    type: 3}
+  _mixWeight: 0
 --- !u!1 &3628464542933803872
 GameObject:
   m_ObjectHideFlags: 0
@@ -384,7 +404,7 @@ MonoBehaviour:
   _speed: 5
   _rotationSpeed: 0.1
   _characterController: {fileID: 7496052917731695210}
-  _animator: {fileID: 3066477035741295860}
+  _animator: {fileID: 3539594366254273844}
   <IsGrounded>k__BackingField: 0
 --- !u!33 &8675426391267063290
 MeshFilter:
@@ -1024,7 +1044,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2546845245127746209}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 71e52cf61f0c4391894efa9838a9ff12, type: 3}
   m_Name: 
