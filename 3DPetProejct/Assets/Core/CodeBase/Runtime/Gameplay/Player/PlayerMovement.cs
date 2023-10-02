@@ -1,4 +1,5 @@
-﻿using Core.CodeBase.Runtime.Infrastructure.Services.Input;
+﻿using Core.CodeBase.Runtime.Animations;
+using Core.CodeBase.Runtime.Infrastructure.Services.Input;
 using UnityEngine;
 using Zenject;
 
@@ -10,7 +11,7 @@ namespace Core.CodeBase.Runtime.Gameplay.Player
     [SerializeField] private float _rotationSpeed;
     
     [SerializeField] private CharacterController _characterController;
-    [SerializeField] private Animations.Simple.PlayerAnimator _animator;
+    [SerializeField] private BasePlayerAnimator _animator;
     
     private IPlayerInput _input;
     private Vector3 _fallVelocity;
