@@ -10,18 +10,19 @@ namespace Core.CodeBase.Runtime.Animations.Custom
   {
     [SerializeField] private Animator _animator;
     [SerializeField] private float _maxDelta = 0.2f;
-    [Header("Clips")]
-    [SerializeField] private AnimationClip _idleClip;
+    [SerializeField, Range(0, 3)] private float _deltaTime;
+    [Header("Clips")] [SerializeField] private AnimationClip _idleClip;
     [SerializeField] private AnimationClip _forward;
     [SerializeField, Range(0, 1)] private float _mixWeight = 0f;
 
     private PlayableGraph _playableGraph;
     private AnimationMixerPlayable _mixer;
+    private float _timer;
 
     private void Awake()
     {
       _playableGraph = PlayableGraph.Create();
-      _playableGraph.SetTimeUpdateMode(DirectorUpdateMode.GameTime);
+      _playableGraph.SetTimeUpdateMode(DirectorUpdateMode.Manual);
       AnimationPlayableOutput output = AnimationPlayableOutput.Create(_playableGraph, "GraphPlayerAnimator", _animator);
       _mixer = AnimationMixerPlayable.Create(_playableGraph, 2);
       output.SetSourcePlayable(_mixer);
@@ -31,8 +32,9 @@ namespace Core.CodeBase.Runtime.Animations.Custom
 
       _playableGraph.Connect(idle, 0, _mixer, 0);
       _playableGraph.Connect(forward, 0, _mixer, 1);
-      
+
       _playableGraph.Play();
+      _animator.runtimeAnimatorController = null;
     }
 
     private void OnDestroy()
@@ -40,10 +42,22 @@ namespace Core.CodeBase.Runtime.Animations.Custom
       _playableGraph.Destroy();
     }
 
+    private void Update()
+    {
+      _timer += Time.deltaTime;
+      if (_timer >= _deltaTime)
+      {
+        _playableGraph.Evaluate(_deltaTime);
+        _timer -= _deltaTime;
+      }
+      
+      // _playableGraph.Evaluate(Time.deltaTime);
+    }
+
     public override void UpdateMovement(Vector3 velocity)
     {
       _mixWeight = Mathf.MoveTowards(_mixWeight, Mathf.Clamp01(velocity.magnitude), _maxDelta);
-      
+
       _mixer.SetInputWeight(0, 1 - _mixWeight);
       _mixer.SetInputWeight(1, _mixWeight);
     }
