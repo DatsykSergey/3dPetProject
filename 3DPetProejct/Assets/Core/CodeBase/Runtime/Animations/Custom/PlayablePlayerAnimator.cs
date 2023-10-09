@@ -64,7 +64,7 @@ namespace Core.CodeBase.Runtime.Animations.Custom
       // _playableGraph.Evaluate(Time.deltaTime);
     }
 
-    public override void UpdateMovement(Vector3 velocity)
+    public override void UpdateMovement(Vector3 velocity, float fallVelocity)
     {
       _mixWeight = Mathf.MoveTowards(_mixWeight, Mathf.Clamp01(velocity.magnitude), _maxDelta);
 
