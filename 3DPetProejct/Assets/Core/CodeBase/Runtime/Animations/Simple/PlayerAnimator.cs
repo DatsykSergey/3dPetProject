@@ -8,27 +8,37 @@ namespace Core.CodeBase.Runtime.Animations.Simple
   {
     [SerializeField] private Animator _animator;
     [SerializeField] private Transform _camera;
-    
+
     private readonly int VerticalHash = Animator.StringToHash("Vertical");
-      private readonly int FallVelocityHash = Animator.StringToHash("FallVelocity");
+    private readonly int GroundedHash = Animator.StringToHash("Grounded");
+    private readonly int JumpHash = Animator.StringToHash("Jump");
 
     private void OnEnable()
     {
     }
 
-    public override void UpdateMovement(Vector3 velocity, float fallVelocity)
+    public override void UpdateMovement(Vector3 velocity, bool isGrounded)
     {
       Vector3 moveDirection = velocity.normalized;
       Vector3 cameraForward = Vector3.ProjectOnPlane(_camera.forward, Vector3.up).normalized;
 
       float vertical = Vector3.Dot(moveDirection, cameraForward);
       _animator.SetFloat(VerticalHash, vertical);
-      _animator.SetFloat(FallVelocityHash, fallVelocity);
+      _animator.SetBool(GroundedHash, isGrounded);
+    }
+
+    public override void Jump()
+    {
+      _animator.SetTrigger(JumpHash);
+    }
+
+    public override void JumpReset()
+    {
+      _animator.ResetTrigger(JumpHash);
     }
 
     private void Update()
     {
-      
     }
   }
 }

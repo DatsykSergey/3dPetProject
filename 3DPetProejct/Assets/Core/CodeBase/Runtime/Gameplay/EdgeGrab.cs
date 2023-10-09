@@ -16,7 +16,7 @@ namespace Core.CodeBase.Runtime.Gameplay
     [SerializeField] private Transform _grabTransform;
     [SerializeField] private Transform _footTransform;
     [SerializeField] private float _moveSpeed = 5f;
-  
+
     [SerializeField, Readonly] private EdgeGrabState _currentState = EdgeGrabState.None;
     private IPlayerInput _playerInput;
 
@@ -36,7 +36,7 @@ namespace Core.CodeBase.Runtime.Gameplay
     private void Update()
     {
       if (_currentState == EdgeGrabState.None &&
-          _playerMovement.IsGrounded == false && 
+          _playerMovement.IsGrounded == false &&
           _edgeFinder.IsHasPoint)
       {
         GrabEdge(_edgeFinder.EdgePoint, -_edgeFinder.Normal);
@@ -55,6 +55,7 @@ namespace Core.CodeBase.Runtime.Gameplay
         JumpDown();
         return;
       }
+
       if (_playerInput.IsPressJump())
       {
         MoveOnEdge();
@@ -66,6 +67,7 @@ namespace Core.CodeBase.Runtime.Gameplay
       {
         MoveToSideways(_right.EdgePoint, -_right.Normal);
       }
+
       if (horizontalMovement < 0 && _left.IsHasPoint)
       {
         MoveToSideways(_left.EdgePoint, -_left.Normal);
@@ -92,7 +94,7 @@ namespace Core.CodeBase.Runtime.Gameplay
       StopAllCoroutines();
       StartCoroutine(StartMoveOnEdge());
     }
-    
+
     private void MoveToSideways(Vector3 newPosition, Vector3 forward)
     {
       StopAllCoroutines();
@@ -110,15 +112,16 @@ namespace Core.CodeBase.Runtime.Gameplay
     private IEnumerator StartMoveOnEdge()
     {
       _currentState = EdgeGrabState.Move;
-      
+
       Vector3 toEdgePoint = _edgeFinder.EdgePoint - _footTransform.position;
       while (toEdgePoint.sqrMagnitude > MathExtension.SqrDistanceAccuracy)
       {
-        _playerMovement.transform.position = Vector3.MoveTowards(_playerMovement.transform.position, _playerMovement.transform.position + toEdgePoint, _moveSpeed * Time.deltaTime);
+        _playerMovement.transform.position = Vector3.MoveTowards(_playerMovement.transform.position,
+          _playerMovement.transform.position + toEdgePoint, _moveSpeed * Time.deltaTime);
         toEdgePoint = _edgeFinder.EdgePoint - _footTransform.position;
         yield return null;
       }
-      
+
       _playerMovement.transform.position += toEdgePoint;
       _playerMovement.UnfreezeMovement();
       _currentState = EdgeGrabState.None;
@@ -127,11 +130,12 @@ namespace Core.CodeBase.Runtime.Gameplay
     private IEnumerator StartMoveToSideways(Vector3 newPosition, Vector3 forward)
     {
       _currentState = EdgeGrabState.Move;
-      
+
       Vector3 toEdgePoint = newPosition - _grabTransform.position;
       while (toEdgePoint.sqrMagnitude > MathExtension.SqrDistanceAccuracy)
       {
-        _playerMovement.transform.position = Vector3.MoveTowards(_playerMovement.transform.position, _playerMovement.transform.position + toEdgePoint, _moveSpeed * Time.deltaTime);
+        _playerMovement.transform.position = Vector3.MoveTowards(_playerMovement.transform.position,
+          _playerMovement.transform.position + toEdgePoint, _moveSpeed * Time.deltaTime);
         toEdgePoint = newPosition - _grabTransform.position;
         yield return null;
       }

@@ -64,12 +64,20 @@ namespace Core.CodeBase.Runtime.Animations.Custom
       // _playableGraph.Evaluate(Time.deltaTime);
     }
 
-    public override void UpdateMovement(Vector3 velocity, float fallVelocity)
+    public override void UpdateMovement(Vector3 velocity, bool isGrounded)
     {
       _mixWeight = Mathf.MoveTowards(_mixWeight, Mathf.Clamp01(velocity.magnitude), _maxDelta);
 
       _mixer.SetInputWeight(0, 1 - _mixWeight);
       _mixer.SetInputWeight(1, _mixWeight);
+    }
+
+    public override void Jump()
+    {
+    }
+
+    public override void JumpReset()
+    {
     }
   }
 }

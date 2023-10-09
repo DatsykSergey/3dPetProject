@@ -16,7 +16,7 @@ namespace Core.CodeBase.Runtime.Gameplay.Player
     private IPlayerInput _input;
     [SerializeField] private Vector3 _fallVelocity;
     private const float GravityY = -9.81f;
-    [field: SerializeField] public bool IsGrounded { get; private set; }
+    [field: SerializeField] public bool IsGrounded { get; private set; } = true;
     private const float JumpHeight = 1.2f;
 
     private float _currentRotateVelocity;
@@ -43,7 +43,8 @@ namespace Core.CodeBase.Runtime.Gameplay.Player
       
       if (_input.IsPressJump() && IsGrounded)
       {
-        JumpUp();
+        _animator?.Jump();
+        // JumpUp();
       }
 
       _fallVelocity.y += GravityY * Time.deltaTime;
@@ -51,7 +52,7 @@ namespace Core.CodeBase.Runtime.Gameplay.Player
 
       float forwardVelocity = Vector3.Dot(moveDirection, transform.forward);
       float rightVelocity = Vector3.Dot(moveDirection, transform.right);
-      _animator?.UpdateMovement(moveDirection, _fallVelocity.y);
+      _animator?.UpdateMovement(moveDirection, IsGrounded && _fallVelocity.y > -1);
 
       if (moveDirection == Vector3.zero)
         return;
