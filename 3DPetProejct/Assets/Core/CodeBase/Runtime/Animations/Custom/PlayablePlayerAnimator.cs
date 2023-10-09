@@ -21,6 +21,11 @@ namespace Core.CodeBase.Runtime.Animations.Custom
 
     private void Awake()
     {
+      if (enabled == false)
+      {
+        return;
+      }
+      Debug.Log("Playable animation");
       _playableGraph = PlayableGraph.Create();
       _playableGraph.SetTimeUpdateMode(DirectorUpdateMode.Manual);
       AnimationPlayableOutput output = AnimationPlayableOutput.Create(_playableGraph, "GraphPlayerAnimator", _animator);
@@ -39,6 +44,11 @@ namespace Core.CodeBase.Runtime.Animations.Custom
 
     private void OnDestroy()
     {
+      if (enabled == false)
+      {
+        return;
+      }
+      
       _playableGraph.Destroy();
     }
 
