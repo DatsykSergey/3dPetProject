@@ -13,10 +13,6 @@ namespace Core.CodeBase.Runtime.Animations.Simple
     private readonly int GroundedHash = Animator.StringToHash("Grounded");
     private readonly int JumpHash = Animator.StringToHash("Jump");
 
-    private void OnEnable()
-    {
-    }
-
     public override void UpdateMovement(Vector3 velocity, bool isGrounded)
     {
       Vector3 moveDirection = velocity.normalized;
@@ -37,7 +33,16 @@ namespace Core.CodeBase.Runtime.Animations.Simple
       _animator.ResetTrigger(JumpHash);
     }
 
-    private void Update()
+    public override void Grab()
+    {
+      
+    }
+
+    public override void UnGrab()
+    {
+    }
+
+    public override void StartGrabToCrouch()
     {
     }
   }

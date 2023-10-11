@@ -79,5 +79,17 @@ namespace Core.CodeBase.Runtime.Animations.Custom
     public override void JumpReset()
     {
     }
+
+    public override void Grab()
+    {
+    }
+
+    public override void UnGrab()
+    {
+    }
+
+    public override void StartGrabToCrouch()
+    {
+    }
   }
 }

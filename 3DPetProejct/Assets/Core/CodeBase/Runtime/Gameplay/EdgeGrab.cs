@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using Core.CodeBase.Runtime.Animations;
 using Core.CodeBase.Runtime.Gameplay.Player;
 using Core.CodeBase.Runtime.Infrastructure.Services.Input;
 using CustomTools.Core.CodeBase.Tools.CustomProperty;
@@ -9,6 +10,7 @@ namespace Core.CodeBase.Runtime.Gameplay
 {
   public class EdgeGrab : MonoBehaviour
   {
+    [SerializeField] private BasePlayerAnimator _animator;
     [SerializeField] private EdgeFinder _left;
     [SerializeField] private EdgeFinder _right;
     [SerializeField] private EdgeFinder _edgeFinder;
@@ -81,6 +83,7 @@ namespace Core.CodeBase.Runtime.Gameplay
       _playerMovement.transform.position += shit;
       _playerMovement.transform.forward = forward;
       _currentState = EdgeGrabState.Grabbed;
+      _animator.Grab();
     }
 
     private void JumpDown()
@@ -103,6 +106,7 @@ namespace Core.CodeBase.Runtime.Gameplay
 
     private IEnumerator StartJumpDown()
     {
+      _animator.UnGrab();
       _playerMovement.UnfreezeMovement();
       _currentState = EdgeGrabState.Move;
       yield return new WaitForSeconds(0.5f);
@@ -112,6 +116,7 @@ namespace Core.CodeBase.Runtime.Gameplay
     private IEnumerator StartMoveOnEdge()
     {
       _currentState = EdgeGrabState.Move;
+      _animator.StartGrabToCrouch();
 
       Vector3 toEdgePoint = _edgeFinder.EdgePoint - _footTransform.position;
       while (toEdgePoint.sqrMagnitude > MathExtension.SqrDistanceAccuracy)
