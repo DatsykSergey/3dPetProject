@@ -19,7 +19,10 @@ namespace Core.CodeBase.Runtime.Animations
     {
       animator.transform.localPosition = _position + _offset;
     }
-    
 
+    public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex, AnimatorControllerPlayable controller)
+    {
+      animator.transform.localPosition = _position;
+    }
   }
 }
