@@ -17,11 +17,7 @@ namespace Core.CodeBase.Runtime.Animations.Simple
 
     public override void UpdateMovement(Vector3 velocity, bool isGrounded)
     {
-      Vector3 moveDirection = velocity.normalized;
-      Vector3 cameraForward = Vector3.ProjectOnPlane(_camera.forward, Vector3.up).normalized;
-
-      float vertical = Vector3.Dot(moveDirection, cameraForward);
-      _animator.SetFloat(VerticalHash, vertical);
+      _animator.SetFloat(VerticalHash, Mathf.Clamp01(velocity.magnitude));
       _animator.SetBool(GroundedHash, isGrounded);
     }
 
