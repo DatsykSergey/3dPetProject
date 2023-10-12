@@ -147,5 +147,11 @@ namespace Core.CodeBase.Runtime.Gameplay
 
       GrabEdge(newPosition, forward);
     }
+
+    public void EndGrabUp()
+    {
+      _playerMovement.UnfreezeMovement();
+      _currentState = EdgeGrabState.None;
+    }
   }
 }
