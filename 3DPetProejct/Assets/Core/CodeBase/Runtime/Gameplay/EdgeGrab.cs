@@ -118,18 +118,21 @@ namespace Core.CodeBase.Runtime.Gameplay
       _currentState = EdgeGrabState.Move;
       _animator.StartGrabToCrouch();
 
-      Vector3 toEdgePoint = _edgeFinder.EdgePoint - _footTransform.position;
-      while (toEdgePoint.sqrMagnitude > MathExtension.SqrDistanceAccuracy)
-      {
-        _playerMovement.transform.position = Vector3.MoveTowards(_playerMovement.transform.position,
-          _playerMovement.transform.position + toEdgePoint, _moveSpeed * Time.deltaTime);
-        toEdgePoint = _edgeFinder.EdgePoint - _footTransform.position;
-        yield return null;
-      }
-
-      _playerMovement.transform.position += toEdgePoint;
-      _playerMovement.UnfreezeMovement();
-      _currentState = EdgeGrabState.None;
+      yield return null;
+      
+      // Vector3 toEdgePoint = _edgeFinder.EdgePoint - _footTransform.position;
+      // while (toEdgePoint.sqrMagnitude > MathExtension.SqrDistanceAccuracy)
+      // {
+      //   _playerMovement.transform.position = Vector3.MoveTowards(_playerMovement.transform.position,
+      //     _playerMovement.transform.position + toEdgePoint, _moveSpeed * Time.deltaTime);
+      //   toEdgePoint = _edgeFinder.EdgePoint - _footTransform.position;
+      //   yield return null;
+      // }
+      //
+      // _playerMovement.transform.position += toEdgePoint;
+      
+      // _playerMovement.UnfreezeMovement();
+      // _currentState = EdgeGrabState.None;
     }
 
     private IEnumerator StartMoveToSideways(Vector3 newPosition, Vector3 forward)
