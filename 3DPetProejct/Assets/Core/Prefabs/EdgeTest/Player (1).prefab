@@ -306,13 +306,14 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3357545420782190954}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: aeb2fa3c4cdc438b8c6d582c80e979b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _animator: {fileID: 9147877617141473889}
   _maxDelta: 0.5
+  _deltaTime: 0.1
   _idleClip: {fileID: -203655887218126122, guid: 3973a21acf5fe3e499e199be79f98992,
     type: 3}
   _forward: {fileID: -203655887218126122, guid: f17c5408cb00da447811fb9fed560406,
@@ -404,7 +405,8 @@ MonoBehaviour:
   _speed: 5
   _rotationSpeed: 0.1
   _characterController: {fileID: 7496052917731695210}
-  _animator: {fileID: 3539594366254273844}
+  _animator: {fileID: 3066477035741295860}
+  _fallVelocity: {x: 0, y: 0, z: 0}
   <IsGrounded>k__BackingField: 0
 --- !u!33 &8675426391267063290
 MeshFilter:
@@ -468,6 +470,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0748a2f45f24fe59acb399c14b36494, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _animator: {fileID: 3066477035741295860}
   _left: {fileID: 849476356729049030}
   _right: {fileID: 5627913186831882499}
   _edgeFinder: {fileID: 4398942907067293171}
@@ -1030,6 +1033,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 3066477035741295860}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 55f89bb5bc2ec664285d3e3cb651710b,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5585542156673052017}
   m_SourcePrefab: {fileID: 100100000, guid: 55f89bb5bc2ec664285d3e3cb651710b, type: 3}
 --- !u!1 &2546845245127746209 stripped
 GameObject:
@@ -1044,13 +1051,28 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2546845245127746209}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 71e52cf61f0c4391894efa9838a9ff12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _animator: {fileID: 9147877617141473889}
   _camera: {fileID: 0}
+--- !u!114 &5585542156673052017
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2546845245127746209}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac0810a72f1447a997b1b24d6194a40a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _movement: {fileID: 3519921324800861025}
+  _animator: {fileID: 3066477035741295860}
+  _edgeGrab: {fileID: 4319030630623023000}
 --- !u!4 &2887905692445521947 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 55f89bb5bc2ec664285d3e3cb651710b,
