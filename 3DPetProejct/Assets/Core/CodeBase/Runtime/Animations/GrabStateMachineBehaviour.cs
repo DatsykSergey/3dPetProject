@@ -1,10 +1,9 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Animations;
 
 namespace Core.CodeBase.Runtime.Animations
 {
-  public class TestStateMachineBehaviour : StateMachineBehaviour
+  public class GrabStateMachineBehaviour : StateMachineBehaviour
   {
 
     [SerializeField] private Vector3 _offset;
