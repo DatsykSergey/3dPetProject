@@ -74,7 +74,7 @@ namespace Core.CodeBase.Runtime.Gameplay.Player
       enabled = true;
     }
 
-    public void JumpUp()
+    public void MakeJump()
     {
       _fallVelocity.y += Mathf.Sqrt(JumpHeight * -3.0f * GravityY);
     }

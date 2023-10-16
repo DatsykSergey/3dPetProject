@@ -49,7 +49,6 @@ namespace Core.CodeBase.Runtime.Gameplay
         return;
       }
 
-      Debug.Log("StartClimb");
       _playerMovement.FreezeMovement();
       _currentState = GrabState.Grabbed;
       SetPositionToLedge();
@@ -164,7 +163,7 @@ namespace Core.CodeBase.Runtime.Gameplay
       _currentState = GrabState.None;
       _hasObstacle = false;
       _playerMovement.UnfreezeMovement();
-      _playerMovement.JumpUp();
+      _playerMovement.MakeJump();
       
       yield return new WaitForSeconds(0.5f);
       _currentState = GrabState.Finding;
