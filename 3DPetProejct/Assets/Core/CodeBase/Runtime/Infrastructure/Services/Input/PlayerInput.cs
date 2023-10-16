@@ -46,7 +46,7 @@ namespace Core.CodeBase.Runtime.Infrastructure.Services.Input
 
     public bool IsPressJump()
     {
-      return _playerActions.Gameplay.Jump.IsPressed();
+      return _playerActions.Gameplay.Jump.WasPerformedThisFrame();
     }
 
     public bool IsPressJumpDown()
