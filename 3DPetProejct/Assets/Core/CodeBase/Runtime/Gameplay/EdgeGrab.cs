@@ -47,6 +47,7 @@ namespace Core.CodeBase.Runtime.Gameplay
       if (_currentState == EdgeGrabState.Grabbed)
       {
         UpdatePosition();
+        UpdateGrapPosition(_edgeFinder.EdgePoint, -_edgeFinder.Normal);
       }
     }
 
@@ -78,12 +79,17 @@ namespace Core.CodeBase.Runtime.Gameplay
 
     private void GrabEdge(Vector3 point, Vector3 forward)
     {
-      Vector3 shit = point - _grabTransform.position;
       _playerMovement.FreezeMovement();
-      _playerMovement.transform.position += shit;
-      _playerMovement.transform.forward = forward;
+      UpdateGrapPosition(point, forward);
       _currentState = EdgeGrabState.Grabbed;
       _animator.Grab();
+    }
+
+    private void UpdateGrapPosition(Vector3 point, Vector3 forward)
+    {
+      Vector3 shit = point - _grabTransform.position;
+      _playerMovement.transform.position += shit;
+      _playerMovement.transform.forward = forward;
     }
 
     private void JumpDown()
@@ -117,6 +123,7 @@ namespace Core.CodeBase.Runtime.Gameplay
     {
       _currentState = EdgeGrabState.Move;
       _animator.StartGrabToCrouch();
+      
 
       yield return null;
       
