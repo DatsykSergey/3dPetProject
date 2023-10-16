@@ -52,7 +52,7 @@ namespace Core.CodeBase.Runtime.Gameplay.Player
 
       float forwardVelocity = Vector3.Dot(moveDirection, transform.forward);
       float rightVelocity = Vector3.Dot(moveDirection, transform.right);
-      _animator?.UpdateMovement(moveDirection, IsGrounded && _fallVelocity.y > -1);
+      _animator?.UpdateMovement(moveDirection, _fallVelocity.y > -0.5 && _fallVelocity.y < 0.5);
 
       if (moveDirection == Vector3.zero)
         return;
