@@ -9,10 +9,10 @@ namespace Core.CodeBase.Runtime.Gameplay.Player
   {
     [SerializeField] private float _speed;
     [SerializeField] private float _rotationSpeed;
-    
+
     [SerializeField] private CharacterController _characterController;
     [SerializeField] private BasePlayerAnimator _animator;
-    
+
     private IPlayerInput _input;
     [SerializeField] private Vector3 _fallVelocity;
     private const float GravityY = -9.81f;
@@ -31,7 +31,7 @@ namespace Core.CodeBase.Runtime.Gameplay.Player
     private void Update()
     {
       IsGrounded = _characterController.isGrounded;
-      
+
       if (IsGrounded && _fallVelocity.y < 0)
       {
         _fallVelocity.y = 0;
@@ -40,7 +40,7 @@ namespace Core.CodeBase.Runtime.Gameplay.Player
       Vector3 moveDirection = _input.GetCameraRelativeMoveDirection();
       Vector3 velocity = moveDirection * (_speed * Time.deltaTime);
       _characterController.Move(velocity);
-      
+
       if (_input.IsPressJump() && IsGrounded)
       {
         _animator?.Jump();
@@ -56,22 +56,25 @@ namespace Core.CodeBase.Runtime.Gameplay.Player
 
       if (moveDirection == Vector3.zero)
         return;
-      
+
       float angel = Mathf.Atan2(moveDirection.x, moveDirection.z) * Mathf.Rad2Deg;
-      float newAngel = Mathf.SmoothDampAngle(transform.eulerAngles.y, angel, ref _currentRotateVelocity, _rotationSpeed);
-      
+      float newAngel =
+        Mathf.SmoothDampAngle(transform.eulerAngles.y, angel, ref _currentRotateVelocity, _rotationSpeed);
+
       transform.rotation = Quaternion.Euler(0f, newAngel, 0f);
     }
 
     public void FreezeMovement()
     {
       enabled = false;
+      _characterController.enabled = false;
     }
 
     public void UnfreezeMovement()
     {
       _fallVelocity.y = 0f;
       enabled = true;
+      _characterController.enabled = true;
     }
 
     public void MakeJump()
