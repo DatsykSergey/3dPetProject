@@ -9,12 +9,22 @@ namespace Core.CodeBase.Runtime.Infrastructure.Services.Input
     private readonly PlayerActions _playerActions;
     
     private Transform _camera;
+    private bool _isRotateMouse = true;
 
     public PlayerInput()
     {
       _playerActions = new PlayerActions();
       _playerActions.Enable();
       _playerActions.Gameplay.StopGame.performed += OnStopButtonClick;
+      _playerActions.Gameplay.StopMouseRotation.performed += SwitchMouseRotation;
+    }
+
+    private void SwitchMouseRotation(InputAction.CallbackContext obj)
+    {
+      if (obj.performed)
+      {
+        _isRotateMouse = !_isRotateMouse;
+      }
     }
 
     public void SetPlayerCamera(Transform camera)
@@ -35,13 +45,13 @@ namespace Core.CodeBase.Runtime.Infrastructure.Services.Input
 
       Vector3 right = _camera.right;
 
-      Vector2 localDirection = _playerActions.Gameplay.MoveDirection.ReadValue<Vector2>();
+      Vector2 localDirection = _isRotateMouse ? _playerActions.Gameplay.MoveDirection.ReadValue<Vector2>() : Vector2.zero;
       return forward * localDirection.y + right * localDirection.x;
     }
 
     public Vector2 GetLookDelta()
     {
-      return _playerActions.Gameplay.LookDelta.ReadValue<Vector2>();
+      return _isRotateMouse ? _playerActions.Gameplay.LookDelta.ReadValue<Vector2>() : Vector2.zero;
     }
 
     public bool IsPressJump()
