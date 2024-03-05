@@ -32,8 +32,7 @@ namespace Core.CodeBase.Runtime.CharacterFSM
         {
           new CheckIsGroundedTransition(_components.GroundChecker, false, typeof(IdleState)),
         })
-        .AddState(new MovementState(_data.Movement, _components.Animator, _components.CharacterController), 
-          new ITransition[]
+        .AddState(CreateMovementState(), new ITransition[]
         {
           new CheckIsGroundedTransition(_components.GroundChecker, false, typeof(FallingState)),
           new CheckJumpTransition(_input, typeof(JumpState)),
@@ -43,6 +42,11 @@ namespace Core.CodeBase.Runtime.CharacterFSM
       
       _stateMachine = new StateMachine(states);
       _stateMachine.Start<IdleState>();
+    }
+
+    private MovementState CreateMovementState()
+    {
+      return new MovementState(_input, _data.Movement, _components.Animator, _components.CharacterController, _components.GroundChecker);
     }
 
     private void Update()
