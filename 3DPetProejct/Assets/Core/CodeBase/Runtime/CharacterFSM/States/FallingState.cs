@@ -1,5 +1,4 @@
-﻿using System;
-using Core.CodeBase.Runtime.Animations;
+﻿using Core.CodeBase.Runtime.Animations;
 using Core.CodeBase.Runtime.Infrastructure.Services.Input;
 using UnityEngine;
 

@@ -44,7 +44,6 @@ namespace Core.CodeBase.Runtime.Gameplay.Player
       if (_input.IsPressJump() && IsGrounded)
       {
         _animator?.Jump();
-        // JumpUp();
       }
 
       _fallVelocity.y += GravityY * Time.deltaTime;
