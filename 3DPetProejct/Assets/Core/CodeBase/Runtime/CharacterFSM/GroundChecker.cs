@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Core.CodeBase.Runtime.CharacterFSM
 {
@@ -14,5 +15,13 @@ namespace Core.CodeBase.Runtime.CharacterFSM
     {
       IsGrounded = Physics.CheckSphere(transform.position + _offset, _radios, _layerMask);
     }
+
+#if UNITY_EDITOR
+    private void OnDrawGizmosSelected()
+    {
+      Gizmos.color = Color.yellow;
+      Gizmos.DrawSphere(transform.position + _offset, _radios);
+    }
+#endif
   }
 }
