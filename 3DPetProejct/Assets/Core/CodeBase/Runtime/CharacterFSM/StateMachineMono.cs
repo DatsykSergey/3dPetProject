@@ -11,10 +11,10 @@ namespace Core.CodeBase.Runtime.CharacterFSM
   {
     [SerializeField] private BasePlayerAnimator _animator;
     [SerializeField] private GroundChecker _groundChecker;
-    
+    [SerializeField] private StateMachine _stateMachine;
+
     [Inject] private IPlayerInput _input;
-    
-    private StateMachine _stateMachine;
+
 
     private void Awake()
     {

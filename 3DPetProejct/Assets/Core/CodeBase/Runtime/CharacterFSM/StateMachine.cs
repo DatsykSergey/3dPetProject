@@ -2,13 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using Core.CodeBase.Runtime.CharacterFSM.States;
+using CustomTools.Core.CodeBase.Tools.CustomProperty;
+using UnityEngine;
 
 namespace Core.CodeBase.Runtime.CharacterFSM
 {
+  [Serializable]
   public class StateMachine
   {
     private readonly Dictionary<Type, State> _states;
     private State _current;
+    [SerializeField, Readonly] private string _currentStateName;
 
     public StateMachine(State[] states)
     {
@@ -39,6 +43,7 @@ namespace Core.CodeBase.Runtime.CharacterFSM
       _current?.Exit();
       _current = _states[stateType];
       _current.Entry();
+      _currentStateName = stateType.Name;
     }
   }
 }
