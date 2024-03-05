@@ -18,7 +18,6 @@ namespace Core.CodeBase.Runtime.CharacterFSM
 
     private void Awake()
     {
-
       State[] states = new StateMachineBuilder()
         .AddState(new IdleState(_animator), new ITransition[]
         {
@@ -43,6 +42,7 @@ namespace Core.CodeBase.Runtime.CharacterFSM
         .Build();
       
       _stateMachine = new StateMachine(states);
+      _stateMachine.Start<IdleState>();
     }
 
     private void Update()

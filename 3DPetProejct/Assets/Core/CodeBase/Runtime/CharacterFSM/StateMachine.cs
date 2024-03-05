@@ -15,9 +15,9 @@ namespace Core.CodeBase.Runtime.CharacterFSM
       _states = states.ToDictionary(state => state.GetType());
     }
 
-    public void Start(Type stateType)
+    public void Start<TState>() where TState : State
     {
-      NextState(stateType);
+      NextState(typeof(TState));
     }
 
     public void Update()
