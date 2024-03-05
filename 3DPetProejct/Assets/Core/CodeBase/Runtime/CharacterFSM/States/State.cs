@@ -1,6 +1,5 @@
 ﻿using System;
 using Core.CodeBase.Runtime.CharacterFSM.Transitions;
-using Zenject;
 
 namespace Core.CodeBase.Runtime.CharacterFSM.States
 {
